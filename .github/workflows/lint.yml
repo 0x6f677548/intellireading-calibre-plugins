@@ -51,12 +51,12 @@ jobs:
       
       - name: Lint with black
         run: |
-          black --check src
+          black --check .
       # ignore E501 (line too long) for now
       - name: Lint with ruff
         run: |
-          ruff src --ignore=E501,I001
+          ruff . --ignore=E501,I001
       - name: Lint with mypy
         run: |
-          mypy src --ignore-missing-imports
+          mypy . --ignore-missing-imports
   
