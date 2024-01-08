@@ -1,6 +1,6 @@
 # Epub Metaguider - Calibre Plugins
 
-[![GitHub - Lint](https://github.com/0x6f677548/epub-metaguider-calibre/actions/workflows/lint.yml/badge.svg)](https://github.com/0x6f677548/epub-metaguider-calibre/actions/workflows/lint.yml)
+[![GitHub - Lint](https://github.com/0x6f677548/intellireading-calibre-plugins/actions/workflows/lint.yml/badge.svg)](https://github.com/0x6f677548/intellireading-calibre-plugins/actions/workflows/lint.yml)
 
 This repo contains the source code for [Intellireading](https://intellireading.com/) Calibre plugins. These plugins allow you to generate metaguided versions of your ebooks, by implementing a streamlined version of the [Intellireading](https://intellireading.com/) algorithm, using the [Calibre](https://calibre-ebook.com/) ebook manager.
 
