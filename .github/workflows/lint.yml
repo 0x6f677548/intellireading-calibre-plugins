@@ -1,0 +1,63 @@
+---
+name: Lint
+
+on:
+  push:
+    branches: [master, main]
+    # only when python files are changed
+    paths: 
+      - '**.py'
+  pull_request:
+    branches: [master, main]
+  
+  workflow_dispatch:
+
+# set the run-name 
+run-name: ${{ github.ref_name }} -> Lint (
+  ${{ github.run_attempt }}
+  )
+
+
+jobs:
+  lint:
+
+    name: Lints the code using specified linters
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Get current date and time
+        id: datetime
+        run: |
+          datetime=$(date +'%Y-%m-%dT%H-%M-%SZ')
+          echo "datetime=$datetime" >> $GITHUB_OUTPUT
+
+      - name: Display date/time in output (forensics when triaging issues)
+        run: echo ${{ steps.datetime.outputs.datetime }}
+
+      - name: Checkout Code
+        uses: actions/checkout@v3.6.0
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v4.7.0
+        with:
+          python-version: 3.11
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install .
+          pip install black
+          pip install ruff
+          pip install mypy
+      
+      - name: Lint with black
+        run: |
+          black --check src
+      # ignore E501 (line too long) for now
+      - name: Lint with ruff
+        run: |
+          ruff src --ignore=E501,I001
+      - name: Lint with mypy
+        run: |
+          mypy src --ignore-missing-imports
+  
