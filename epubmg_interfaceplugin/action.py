@@ -83,9 +83,12 @@ class InterfacePlugin(InterfaceAction):
             format_to_find = "epub"
             if current_database.has_format(book_id, format_to_find):
                 epubs_found_count += 1
-                temp_file = current_database.format(book_id, format_to_find, as_path=True)
+                temp_file = current_database.format(
+                    book_id, format_to_find, as_path=True
+                )
                 common.log.debug(
-                    "Converting epub for book id: %d, format: %s" % (book_id, format_to_find)
+                    "Converting epub for book id: %d, format: %s"
+                    % (book_id, format_to_find)
                 )
 
                 try:
@@ -113,7 +116,8 @@ class InterfacePlugin(InterfaceAction):
                     return error_dialog(
                         self.gui,
                         "Error adding metaguided format",
-                        "Failed to add format %s to book id %d" % (format_to_find, book_id),
+                        "Failed to add format %s to book id %d"
+                        % (format_to_find, book_id),
                         show=True,
                     )
 
