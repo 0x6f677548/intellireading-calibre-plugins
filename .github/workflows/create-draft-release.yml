@@ -1,0 +1,76 @@
+---
+  name: Create->Draft Release
+  # yamllint disable rule:line-length
+  
+  on:
+    workflow_dispatch:
+      inputs:
+        version:
+          description: 'The version for the release'
+          required: true
+          default: '0.0.0'
+  
+  # set the run-name 
+  run-name: ${{ github.ref_name }} -> Create->Draft Release (
+    ${{ github.run_attempt }}
+    )
+      
+  
+  jobs:
+    validate:
+      name: Validates inputs
+      runs-on: ubuntu-latest
+      permissions:
+        contents: read
+      steps:
+        #validates that the version is a valid semver
+        - name: Validate version
+          id: validate_version
+          run: |
+            if [[ ! ${{ inputs.version }} =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+              echo "Invalid version: ${{ inputs.version }}"
+              exit 1
+            fi
+         
+    
+    create_draft_release:
+      name: Creates a draft release with version number as title
+      runs-on: ubuntu-latest
+      permissions:
+        id-token: write
+        contents: write
+      steps:
+  
+      - name: Get current date and time
+        id: datetime
+        run: |
+          datetime=$(date +'%Y-%m-%dT%H-%M-%SZ')
+          echo "datetime=$datetime" >> $GITHUB_OUTPUT
+  
+      - name: Display Run Name
+        run: echo ${{ steps.datetime.outputs.datetime }}
+  
+      - name: Checkout
+        uses: actions/checkout@v4.1.0
+      
+      - name: Zip epubmg_interfaceplugin Folder
+        run: |
+          cd epubmg_interfaceplugin
+          zip -r ../epubmg_interfaceplugin.zip .
+          cd ../epubmg_filetypeplugin
+          zip -r ../epubmg_filetypeplugin.zip .
+          cd ../epubmg_outputplugin
+          zip -r ../epubmg_outputplugin.zip .
+          cd ..
+
+      - name: Create release branch
+        run: |
+          git checkout -b "release/${{ inputs.version }}"
+          git push origin "release/${{ inputs.version }}"
+  
+      - name: Create DRAFT release through github cli and upload assets
+        env: 
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |        
+          gh release create ${{ inputs.version }} --title ${{ inputs.version }} --generate-notes --draft 'epubmg_interfaceplugin.zip' 'epubmg_filetypeplugin.zip' 'epubmg_outputplugin.zip' 
+  
