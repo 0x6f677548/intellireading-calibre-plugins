@@ -19,7 +19,7 @@ from calibre.customize.conversion import (
 )
 
 from calibre_plugins.epubmgoutput import (  # pylint: disable=import-error # type: ignore
-    common, 
+    common,
 )
 
 
