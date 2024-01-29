@@ -3,7 +3,7 @@ import os
 # pylint: disable=import-error
 
 from calibre_plugins.epubmgfiletype import (
-    epubmg_common as common,
+    common,
 )
 from calibre.customize import (
     FileTypePlugin,

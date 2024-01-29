@@ -7,7 +7,7 @@ from calibre.customize import (
     InterfaceActionBase,
 )
 from calibre_plugins.epubmginterface import (
-    epubmg_common as common,
+    common,
 )
 
 

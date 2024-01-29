@@ -14,7 +14,7 @@ from calibre.gui2.actions import (
     InterfaceAction,
 )
 from calibre_plugins.epubmginterface import (
-    epubmg_common as common,
+    common,
 )
 
 
