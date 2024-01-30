@@ -11,7 +11,7 @@ from calibre.gui2.convert.epub_output import PluginWidget as EPUBPluginWidget
 from calibre.gui2.convert.epub_output_ui import Ui_Form as EPUBUIForm
 from calibre.gui2.preferences.conversion import OutputOptions as BaseOutputOptions
 
-from calibre_plugins.epubmgoutput import epubmg_common as common
+from calibre_plugins.epubmgoutput import common
 
 
 class PluginWidget(EPUBPluginWidget, EPUBUIForm):

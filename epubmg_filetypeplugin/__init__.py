@@ -3,7 +3,7 @@ import os
 # pylint: disable=import-error
 
 from calibre_plugins.epubmgfiletype import (
-    epubmg_common as common,
+    common,
 )
 from calibre.customize import (
     FileTypePlugin,
@@ -17,15 +17,13 @@ __docformat__ = "markdown en"
 class MetaguidedEpubFileType(FileTypePlugin):
     """Plugin to convert epub files to metaguided epub files."""
 
-    name = common.PLUGIN_NAME + " FileType"
-    description = (
-        common.PLUGIN_DESCRIPTION + " - Works on post conversion and post import."
-    )
-    supported_platforms = common.PLUGIN_SUPPORTED_PLATFORMS
-    author = common.PLUGIN_AUTHOR
-    version = common.PLUGIN_VERSION
-    file_types = common.PLUGIN_FILE_TYPES
-    minimum_calibre_version = common.PLUGIN_MINIMUM_CALIBRE_VERSION
+    name = "Epub Metaguider post processor (intellireading.com)"
+    description = "Works on post conversion/import and converts epub files to a metaguided format, improving your focus and reading speed (sometimes called bionic reading)."
+    supported_platforms = ["windows", "osx", "linux"]
+    author = "0x6f677548 (Hugo Batista)"
+    version = (1, 0, 1)
+    file_types = set(["epub"])
+    minimum_calibre_version = (6, 5, 0)
     on_postprocess = True  # Run this plugin after conversion is complete
     on_import = True  # Run this plugin on import
 

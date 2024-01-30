@@ -6,9 +6,6 @@ __copyright__ = "2024, 0x6f677548 (Hugo Batista)<Ox6f677548 at outlook dot com>"
 from calibre.customize import (
     InterfaceActionBase,
 )
-from calibre_plugins.epubmginterface import (
-    epubmg_common as common,
-)
 
 
 class InterfacePluginWrapper(InterfaceActionBase):
@@ -22,16 +19,12 @@ class InterfacePluginWrapper(InterfaceActionBase):
     calibre utilities to run without needing to load the GUI libraries.
     """
 
-    name = common.PLUGIN_NAME + " Interface"
-    description = common.PLUGIN_DESCRIPTION
-    description = (
-        common.PLUGIN_DESCRIPTION
-        + " - Works better when added to toolbar and context menu"
-    )
-    supported_platforms = common.PLUGIN_SUPPORTED_PLATFORMS
-    author = common.PLUGIN_AUTHOR
-    version = common.PLUGIN_VERSION
-    minimum_calibre_version = common.PLUGIN_MINIMUM_CALIBRE_VERSION
+    name = "Epub Metaguider GUI (intellireading.com)"
+    description = "Adds a button to toolbar and context menu, to convert epub files to a metaguided format, improving your focus and reading speed (sometimes called bionic reading)."
+    supported_platforms = ["windows", "osx", "linux"]
+    author = "0x6f677548 (Hugo Batista)"
+    version = (1, 0, 1)
+    minimum_calibre_version = (6, 5, 0)
 
     #: This field defines the GUI plugin class that contains all the code
     #: that actually does something. Its format is module_path:class_name

@@ -1,4 +1,5 @@
 """Init epubmg output plugin."""
+
 # pylint: disable=import-error
 # flake8: noqa
 

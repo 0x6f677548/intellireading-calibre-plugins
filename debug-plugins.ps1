@@ -24,9 +24,9 @@ Write-Output "Calibre directory: $calibreDir"
 
 #array of plugins to remove and add
 $plugins = @(
-    @("IntelliReading.com - Epub Metaguider FileType",'.\epubmg_filetypeplugin\'),
-    @("IntelliReading.com - Epub Metaguider Output", '.\epubmg_outputplugin\'),
-    @("IntelliReading.com - Epub Metaguider Interface", '.\epubmg_interfaceplugin\')
+    @("Epub Metaguider post processor (intellireading.com)",'.\epubmg_filetypeplugin\'),
+    @("Epub Metaguider output format (intellireading.com)", '.\epubmg_outputplugin\'),
+    @("Epub Metaguider GUI (intellireading.com)", '.\epubmg_interfaceplugin\')
 )
 
 
