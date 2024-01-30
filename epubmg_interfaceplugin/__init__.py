@@ -6,9 +6,6 @@ __copyright__ = "2024, 0x6f677548 (Hugo Batista)<Ox6f677548 at outlook dot com>"
 from calibre.customize import (
     InterfaceActionBase,
 )
-from calibre_plugins.epubmginterface import (
-    common,
-)
 
 
 class InterfacePluginWrapper(InterfaceActionBase):
