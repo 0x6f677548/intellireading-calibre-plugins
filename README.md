@@ -19,9 +19,9 @@ For more information, visit the [Calibre website](https://calibre-ebook.com/).
 
 ## Calibre Plugins available
 The plugins are available in the [Calibre Plugin Store](https://plugins.calibre-ebook.com/), and can be installed from the Calibre interface. You can also download the plugins from this repo, and install them manually. All plugins are compatible with Calibre 6.5.0 and above.
-### Epub Metaguider FileType plugin
+### Epub Metaguider post processor (FileType)
 Works on post conversion and post import, allowing you to generate metaguided versions of your ebooks when converting to epub or importing epub files.
-### Epub Metaguider Interface Action plugin
+### Epub Metaguider GUI (Interface Action)
 Adds buttons to the Calibre interface, allowing you to generate metaguided versions of your ebooks from the Main Toolbar or the Context Menu.
-### Epub Metaguider Output Format plugin
+### Epub Metaguider output format (Output Format)
 Extends the epub output format, allowing you to generate metaguided versions of your ebooks when converting to epub.
