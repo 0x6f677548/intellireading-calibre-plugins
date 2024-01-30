@@ -30,15 +30,6 @@ from polyglot.io import PolyglotStringIO
 if is_py3:
     from typing import List
 
-PLUGIN_VERSION = (1, 0, 1)
-PLUGIN_MINIMUM_CALIBRE_VERSION = (6, 5, 0)
-PLUGIN_AUTHOR = "0x6f677548 (Hugo Batista)"
-PLUGIN_SUPPORTED_PLATFORMS = ["windows", "osx", "linux"]
-PLUGIN_FILE_TYPES = set(["epub"])
-PLUGIN_FILE_TYPE = "epub"
-PLUGIN_NAME = "IntelliReading.com - Epub Metaguider"
-PLUGIN_DESCRIPTION = "Converts epub files to a metaguided format, improving your focus and reading speed."
-
 
 def metaguide_epub(input_path: str, output_path: str):
     """Converts an epub file to a metaguided epub file"""
