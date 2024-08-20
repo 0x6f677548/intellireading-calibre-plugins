@@ -128,4 +128,8 @@ class InterfacePlugin(InterfaceAction):
             % (epubs_found_count, len(selected_ids)),
             show=True,
         )
-        self.gui.refresh_all()
+        current_idx = self.gui.library_view.currentIndex()
+        self.gui.library_view.model().current_changed(current_idx, current_idx)
+        self.gui.library_view.model().refresh_ids(selected_ids)
+
+        
