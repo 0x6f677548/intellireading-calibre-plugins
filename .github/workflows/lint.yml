@@ -55,7 +55,7 @@ jobs:
       # ignore E501 (line too long) for now
       - name: Lint with ruff
         run: |
-          ruff . --ignore=E501,I001
+          ruff check . --ignore=E501,I001
       - name: Lint with mypy
         run: |
           mypy . --ignore-missing-imports
