@@ -260,6 +260,7 @@ class EpubItemFile:
             file_extension == ".HTM"
             or file_extension == ".HTML"
             or file_extension == ".XHTML"
+            or file_extension == ".XML"
         )
         self.transformed = False
 
