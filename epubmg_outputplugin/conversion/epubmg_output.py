@@ -32,7 +32,7 @@ class MetaguidedEpubOutput(EPUBOutput):
     description = "Adds additional options to Epub Output conversion, enabling epub files conversion to a metaguided format, improving your focus and reading speed (sometimes called bionic reading)."
     supported_platforms = ["windows", "osx", "linux"]
     author = "0x6f677548 (Hugo Batista)"
-    version = (1, 0, 1)
+    version = (1, 0, 2)
     file_type = "epub"
     minimum_calibre_version = (6, 5, 0)
     on_postprocess = True  # Run this plugin after conversion is complete
