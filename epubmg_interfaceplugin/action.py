@@ -131,5 +131,3 @@ class InterfacePlugin(InterfaceAction):
         current_idx = self.gui.library_view.currentIndex()
         self.gui.library_view.model().current_changed(current_idx, current_idx)
         self.gui.library_view.model().refresh_ids(selected_ids)
-
-        
