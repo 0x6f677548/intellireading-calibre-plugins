@@ -1,4 +1,5 @@
-# Epub Metaguider - Calibre Plugins
+![Intellireading.com](https://raw.githubusercontent.com/0x6f677548/intellireading-www/main/src/img/intellireading.png)
+# Calibre Plugins
 
 [![GitHub - Lint](https://github.com/0x6f677548/intellireading-calibre-plugins/actions/workflows/lint.yml/badge.svg)](https://github.com/0x6f677548/intellireading-calibre-plugins/actions/workflows/lint.yml)
 
