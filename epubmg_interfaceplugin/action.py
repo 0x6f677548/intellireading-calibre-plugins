@@ -81,6 +81,9 @@ class InterfacePlugin(InterfaceAction):
         kepub_action = self.menu.addAction(_("Metaguide kepub"))  # type: ignore # noqa
         kepub_action.triggered.connect(self.metaguide_kepub_selection)
 
+        # Add separator
+        self.menu.addSeparator()
+
         # Add remove metaguiding action to menu
         remove_metaguiding_action = self.menu.addAction(_("Remove metaguiding"))
         remove_metaguiding_action.triggered.connect(
