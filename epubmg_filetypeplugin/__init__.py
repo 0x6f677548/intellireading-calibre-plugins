@@ -4,6 +4,7 @@ import os
 
 from calibre_plugins.epubmgfiletype import (
     common,
+    metaguiding,
 )
 from calibre.customize import (
     FileTypePlugin,
@@ -21,7 +22,7 @@ class MetaguidedEpubFileType(FileTypePlugin):
     description = "Works on post conversion/import and converts epub files to a metaguided format, improving your focus and reading speed (sometimes called bionic reading)."
     supported_platforms = ["windows", "osx", "linux"]
     author = "0x6f677548 (Hugo Batista)"
-    version = (1, 0, 2)
+    version = (1, 1, 1)
     file_types = set(["epub"])
     minimum_calibre_version = (6, 5, 0)
     on_postprocess = True  # Run this plugin after conversion is complete
@@ -29,6 +30,8 @@ class MetaguidedEpubFileType(FileTypePlugin):
 
     def __init__(self, *args, **kwargs):
         common.log.debug(f"Initializing {self.name} plugin")
+        # point the metaguiding logger to the common logger
+        metaguiding._logger = common.log
 
         # this is where additional plugin settings should be applied.
         # example:
@@ -50,7 +53,11 @@ class MetaguidedEpubFileType(FileTypePlugin):
             + " (metaguided)"
             + os.path.splitext(path_to_ebook)[1]
         )
-        common.metaguide_epub(path_to_ebook, _output_path)
+        try:
+            metaguiding.metaguide_epub_file(path_to_ebook, _output_path)
+        except Exception as e:
+            common.log.error(f"Error running {self.name} plugin: {e}")
+            raise e
         return _output_path
 
     def is_customizable(self):
