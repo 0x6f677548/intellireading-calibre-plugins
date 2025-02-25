@@ -32,9 +32,9 @@ This repo is part of the [Intellireading](https://intellireading.com/) project, 
 ## Calibre Plugins available
 **Th**e **plug**ins **ar**e **avail**able **i**n **th**e [**Cali**bre **Plu**gin **Sto**re](https://plugins.calibre-ebook.com/), **an**d **ca**n **b**e **insta**lled **fr**om **th**e **Cali**bre **inter**face. **Yo**u **ca**n **al**so **down**load **th**e **plug**ins **fr**om **th**is **rep**o, **an**d **inst**all **th**em **manua**lly. **Al**l **plug**ins **ar**e **compa**tible **wi**th **Cali**bre **6.5**.0 **an**d **abo**ve.
 
-### Epub Metaguider post processor (FileType)
+### [Epub Metaguider post processor (FileType)](https://www.mobileread.com/forums/showthread.php?t=358613)
 **Wor**ks **o**n **po**st **conve**rsion **an**d **po**st **impo**rt, **allo**wing **yo**u **t**o **gene**rate **metag**uided **vers**ions **o**f **yo**ur **ebo**oks **wh**en **conve**rting **t**o **ep**ub **o**r **impor**ting **ep**ub **fil**es.
-### Epub Metaguider GUI (Interface Action)
+### [Epub Metaguider GUI (Interface Action)](https://www.mobileread.com/forums/showthread.php?t=358615)
 **Ad**ds **butt**ons **t**o **th**e **Cali**bre **inter**face, **allo**wing **yo**u **t**o **gene**rate **metag**uided **vers**ions **o**f **yo**ur **ebo**oks **fr**om **th**e **Ma**in **Tool**bar **o**r **th**e **Cont**ext **Men**u.
-### Epub Metaguider output format (Output Format)
+### [Epub Metaguider output format (Output Format)](https://www.mobileread.com/forums/showthread.php?t=358616)
 **Exte**nds **th**e **ep**ub **out**put **form**at, **allo**wing **yo**u **t**o **gene**rate **metag**uided **vers**ions **o**f **yo**ur **ebo**oks **wh**en **conve**rting **t**o **epu**b.
