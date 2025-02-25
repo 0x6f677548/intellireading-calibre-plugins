@@ -137,7 +137,7 @@ class InterfacePlugin(InterfaceAction):
                 )
 
                 try:
-                    metaguiding.metaguide_epub_file(temp_file, temp_file)
+                    metaguiding.metaguide_epub_file(temp_file, temp_file, remove_metaguiding = remove_metaguiding)
                 except Exception as e:  # pylint: disable=broad-except
                     common.log.error(
                         "Error processing book id: %d, format: %s"
