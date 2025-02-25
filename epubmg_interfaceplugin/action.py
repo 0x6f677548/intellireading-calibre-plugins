@@ -113,6 +113,19 @@ class InterfacePlugin(InterfaceAction):
                 default_yes=False,
             ):
                 return
+        else:
+            if not question_dialog(
+                self.gui,
+                "Metaguiding will modify your files",
+                "This feature will modify your files by adding metaguiding to them. "
+                "The original file will be saved as ORIGINAL_format (ex: ORIGINAL_EPUB), and the new file will overwrite the original file. "
+                "Any previous ORIGINAL_format file will be overwritten and lost. "
+                "Please make sure to backup your library before using this feature.\n\n"
+                "Do you want to continue?",
+                show_copy_button=True,
+                default_yes=False,
+            ):
+                return
 
         action_text = "remove metaguiding" if remove_metaguiding else "add metaguiding"
 
@@ -137,7 +150,7 @@ class InterfacePlugin(InterfaceAction):
                 )
 
                 try:
-                    metaguiding.metaguide_epub_file(temp_file, temp_file)
+                    metaguiding.metaguide_epub_file(temp_file, temp_file, remove_metaguiding = remove_metaguiding)
                 except Exception as e:  # pylint: disable=broad-except
                     common.log.error(
                         "Error processing book id: %d, format: %s"
