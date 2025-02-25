@@ -7,6 +7,7 @@ try:
     from qt.core import QToolButton, QMenu
 except ImportError:
     from PyQt5.Qt import QToolButton, QMenu
+from calibre.gui2 import question_dialog
 
 
 # The class that all interface action plugins must inherit from
@@ -80,6 +81,12 @@ class InterfacePlugin(InterfaceAction):
         kepub_action = self.menu.addAction(_("Metaguide kepub"))  # type: ignore # noqa
         kepub_action.triggered.connect(self.metaguide_kepub_selection)
 
+        # Add remove metaguiding action to menu
+        remove_metaguiding_action = self.menu.addAction(_("Remove metaguiding"))
+        remove_metaguiding_action.triggered.connect(
+            self.remove_metaguiding_epub_selection
+        )
+
         # point the metaguiding logger to the common logger
         metaguiding._logger = common.log
 
@@ -90,6 +97,22 @@ class InterfacePlugin(InterfaceAction):
             error_dialog,
             info_dialog,
         )
+
+        # warn the user that remove_metaguiding is an EXPERIMENTAL feature and
+        # that it may not work as expected.
+        if remove_metaguiding:
+            if not question_dialog(
+                self.gui,
+                "Remove metaguiding is an EXPERIMENTAL feature",
+                "This feature is still in development and may not work as expected. "
+                "It should only be used if you deleted your ORIGINAL_format file and you want to try "
+                "to remove the metaguiding. Some original format may not be restored. "
+                "Please make sure to backup your library before using this feature.\n\n"
+                "Do you want to continue?",
+                show_copy_button=True,
+                default_yes=False,
+            ):
+                return
 
         action_text = "remove metaguiding" if remove_metaguiding else "add metaguiding"
 
@@ -159,3 +182,6 @@ class InterfacePlugin(InterfaceAction):
 
     def metaguide_kepub_selection(self):
         self.metaguide_selection_format("kepub")
+
+    def remove_metaguiding_epub_selection(self):
+        self.metaguide_selection_format("epub", remove_metaguiding=True)
