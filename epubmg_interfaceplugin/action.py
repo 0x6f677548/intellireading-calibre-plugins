@@ -85,7 +85,7 @@ class InterfacePlugin(InterfaceAction):
         self.menu.addSeparator()
 
         # Add remove metaguiding action to menu
-        remove_metaguiding_action = self.menu.addAction(_("Remove metaguiding"))
+        remove_metaguiding_action = self.menu.addAction(_("Remove metaguiding")) # type: ignore # noqa
         remove_metaguiding_action.triggered.connect(
             self.remove_metaguiding_epub_selection
         )
