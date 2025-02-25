@@ -20,6 +20,7 @@ from calibre.customize.conversion import (
 
 from calibre_plugins.epubmgoutput import (  # pylint: disable=import-error # type: ignore
     common,
+    metaguiding,
 )
 
 
@@ -32,7 +33,7 @@ class MetaguidedEpubOutput(EPUBOutput):
     description = "Adds additional options to Epub Output conversion, enabling epub files conversion to a metaguided format, improving your focus and reading speed (sometimes called bionic reading)."
     supported_platforms = ["windows", "osx", "linux"]
     author = "0x6f677548 (Hugo Batista)"
-    version = (1, 0, 2)
+    version = (1, 1, 0)
     file_type = "epub"
     minimum_calibre_version = (6, 5, 0)
     on_postprocess = True  # Run this plugin after conversion is complete
@@ -59,6 +60,8 @@ class MetaguidedEpubOutput(EPUBOutput):
 
     def __init__(self, *args, **kwargs):
         common.log.debug(f"Initalizing {self.name}")
+        # point the metaguiding logger to the common logger
+        metaguiding._logger = common.log
 
         common.log.debug(f"Adding options for plugin: {self.name}")
         self.options = self.options.union(self.epubmg_options)
@@ -90,7 +93,11 @@ class MetaguidedEpubOutput(EPUBOutput):
 
         if opts.epubmg_enable_metaguiding:
             common.log.debug("Running epubmg conversion")
-            common.metaguide_epub(output, output)
+            try:
+                metaguiding.metaguide_epub_file(output, output)
+            except Exception as e:
+                common.log.error(f"Error processing {self.name}: {e}")
+                raise e
 
         common.log.debug(f"Convert finished on {self.name}")
         return
