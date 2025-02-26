@@ -43,7 +43,7 @@ class MetaguidedEpubOutput(EPUBOutput):
     epubmg_options: Set[OptionRecommendation] = {
         OptionRecommendation(
             name="epubmg_enable_metaguiding",
-            recommended_value=True,
+            recommended_value=False,
             help=" ".join(
                 [
                     _("Select this to enable text metaguiding."),  # type: ignore # noqa
