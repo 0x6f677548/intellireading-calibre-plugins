@@ -22,7 +22,7 @@ class MetaguidedEpubFileType(FileTypePlugin):
     description = "Works on post conversion/import and converts epub files to a metaguided format, improving your focus and reading speed (sometimes called bionic reading)."
     supported_platforms = ["windows", "osx", "linux"]
     author = "0x6f677548 (Hugo Batista)"
-    version = (1, 1, 1)
+    version = (1, 1, 0)
     file_types = set(["epub"])
     minimum_calibre_version = (6, 5, 0)
     on_postprocess = True  # Run this plugin after conversion is complete
