@@ -1,4 +1,4 @@
-![Intellireading.com](https://raw.githubusercontent.com/0x6f677548/intellireading-www/main/src/img/intellireading.png)
+![Intellireading.com](https://go.hugobatista.com/ghraw/intellireading-www/main/src/img/intellireading.png)
 # Calibre Plugins
 
 [![GitHub - Lint](https://go.hugobatista.com/gh/intellireading-calibre-plugins/actions/workflows/lint.yml/badge.svg)](https://go.hugobatista.com/gh/intellireading-calibre-plugins/actions/workflows/lint.yml)
@@ -6,7 +6,7 @@
 **Th**is **re**po **cont**ains **th**e **sou**rce **co**de **fo**r [**Intelli**reading](https://intellireading.com/) **Cali**bre **plug**ins. **The**se **plug**ins **all**ow **yo**u **t**o **gene**rate **metag**uided **vers**ions **o**f **yo**ur **eboo**ks, **b**y **implem**enting **a** **stream**lined **vers**ion **o**f **th**e [**Intelli**reading](https://intellireading.com/) **algor**ithm, **usi**ng **th**e [**Cali**bre](https://calibre-ebook.com/) **ebo**ok **mana**ger.
 
 Example of a text converted to a metaguided text:
-![Intellireading.com](https://raw.githubusercontent.com/0x6f677548/intellireading-www/main/src/img/sample.png) 
+![Intellireading.com](https://go.hugobatista.com/ghraw/intellireading-www/main/src/img/sample.png) 
 
 
 This repo is part of the [Intellireading](https://intellireading.com/) project, which aims to help people with dyslexia, ADHD, or anyone who wants to improve their reading focus and speed. 
