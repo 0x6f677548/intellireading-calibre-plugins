@@ -13,7 +13,7 @@ This repo is part of the [Intellireading](https://intellireading.com/) project, 
 
 ## [Other Intellireading Code Repositories](https://github.com/stars/0x6f677548/lists/intellireading)
 - [Intellireading website](https://www.github.com/0x6f677548/intellireading-www), which allows anyone to convert an Epub to the metaguided version.
-- [Backend Servers](https://www.github.com/0x6f677548/intellireading-backend), that support the Intellireading website.
+- [API Server](https://www.github.com/0x6f677548/intellireading-api_server), that support the Intellireading website.
 - [CLI Tool](https://www.github.com/0x6f677548/intellireading-cli). A standalone tool and library that can be used to metaguide epub files.
 - [Calibre Plugins](https://www.github.com/0x6f677548/intellireading-calibre-plugins). A set of plugins that can be used to metaguide epub files using Calibre.
 
