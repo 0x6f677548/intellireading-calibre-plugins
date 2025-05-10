@@ -1,5 +1,5 @@
 __license__ = "GPL v3"
-__copyright__ = "2024, 0x6f677548 (Hugo Batista)<Ox6f677548 at outlook dot com>"
+__copyright__ = "2025, Hugo Batista <intellireading at hugobatista.com>"
 
 # pylint: disable=import-error
 # pylint: disable=undefined-variable

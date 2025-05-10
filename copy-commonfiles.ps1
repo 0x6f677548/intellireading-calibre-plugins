@@ -14,8 +14,8 @@ if (-not (Test-Path .\_common\metaguiding.py) -or (Read-Host "Do you want to upd
         Copy-Item -Path ..\intellireading-cli\src\intellireading\client\metaguiding.py -Destination .\_common\metaguiding.py -Force
     }
     else {
-        #download the latest version of metaguiding.py from https://raw.githubusercontent.com/0x6f677548/intellireading-cli/refs/heads/main/src/intellireading/client/metaguiding.py
-        Invoke-WebRequest -Uri "https://raw.githubusercontent.com/0x6f677548/intellireading-cli/refs/heads/main/src/intellireading/client/metaguiding.py" -OutFile .\_common\metaguiding.py
+        #download the latest version of metaguiding.py from https://go.hugobatista.com/ghraw/intellireading-cli/refs/heads/main/src/intellireading/client/metaguiding.py
+        Invoke-WebRequest -Uri "https://go.hugobatista.com/ghraw/intellireading-cli/refs/heads/main/src/intellireading/client/metaguiding.py" -OutFile .\_common\metaguiding.py
     }
     
 }
