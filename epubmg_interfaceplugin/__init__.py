@@ -1,5 +1,5 @@
 __license__ = "GPL v3"
-__copyright__ = "2024, 0x6f677548 (Hugo Batista)<Ox6f677548 at outlook dot com>"
+__copyright__ = "2025, Hugo Batista <intellireading at hugobatista.com>"
 # pylint: disable=import-error
 
 # The class that all Interface Action plugin wrappers must inherit from
@@ -22,7 +22,7 @@ class InterfacePluginWrapper(InterfaceActionBase):
     name = "Epub Metaguider GUI (intellireading.com)"
     description = "Adds a button to toolbar and context menu, to convert epub and kepub files to a metaguided format, improving your focus and reading speed (sometimes called bionic reading)."
     supported_platforms = ["windows", "osx", "linux"]
-    author = "0x6f677548 (Hugo Batista)"
+    author = "Hugo Batista"
     version = (1, 1, 0)
     minimum_calibre_version = (6, 5, 0)
 

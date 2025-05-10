@@ -1,7 +1,7 @@
 """Configuration for exporting epubmg files."""
 
 __license__ = "GPL v3"
-__copyright__ = "2024, 0x6f677548 (Hugo Batista)<Ox6f677548 at outlook dot com>"
+__copyright__ = "2025, Hugo Batista <intellireading at hugobatista.com>"
 __docformat__ = "markdown en"
 
 # pylint: disable=import-error

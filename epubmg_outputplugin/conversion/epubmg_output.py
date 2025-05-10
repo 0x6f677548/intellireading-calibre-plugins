@@ -1,7 +1,7 @@
 """Output processing for Metaguided Epub files."""
 
 __license__ = "GPL v3"
-__copyright__ = "2024, 0x6f677548 (Hugo Batista)<Ox6f677548 at outlook dot com>"
+__copyright__ = "2025, Hugo Batista <intellireading at hugobatista.com>"
 __docformat__ = "markdown en"
 
 from typing import Any
@@ -32,7 +32,7 @@ class MetaguidedEpubOutput(EPUBOutput):
     name = "Epub Metaguider output format (intellireading.com)"
     description = "Adds additional options to Epub Output conversion, enabling epub files conversion to a metaguided format, improving your focus and reading speed (sometimes called bionic reading)."
     supported_platforms = ["windows", "osx", "linux"]
-    author = "0x6f677548 (Hugo Batista)"
+    author = "Hugo Batista"
     version = (1, 1, 0)
     file_type = "epub"
     minimum_calibre_version = (6, 5, 0)
