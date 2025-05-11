@@ -17,6 +17,7 @@ from calibre.gui2.actions import (
 from calibre_plugins.epubmginterface import (
     common,
     metaguiding,
+    config,
 )
 
 
@@ -36,7 +37,7 @@ class InterfacePlugin(InterfaceAction):
     action_spec = (
         _("Metaguide"),  # type: ignore # noqa
         None,
-        _("Generate a metaguided epub"),  # type: ignore # noqa
+        _("Generate a metaguided epub/kepub"),  # type: ignore # noqa
         "Shift+M",
     )
     action_type = "current"
@@ -70,8 +71,11 @@ class InterfacePlugin(InterfaceAction):
             self.menu = QMenu()
             self.qaction.setMenu(self.menu)
 
-        # Add default action
-        self.qaction.triggered.connect(self.metaguide_epub_selection)
+        # Add default action based on configuration
+        self.qaction.triggered.connect(
+            self.metaguide_kepub_selection if config.prefs['default_action'] == 'kepub'
+            else self.metaguide_epub_selection
+        )
 
         # Add epub action to menu
         epub_action = self.menu.addAction(_("Metaguide epub"))  # type: ignore # noqa
@@ -213,3 +217,14 @@ class InterfacePlugin(InterfaceAction):
 
     def remove_metaguiding_epub_selection(self):
         self.metaguide_selection_format("epub", remove_metaguiding=True)
+        
+    def apply_settings(self):
+        """
+        Called when the plugin's configuration has been changed.
+        Update the toolbar button's action.
+        """
+        self.qaction.triggered.disconnect()
+        self.qaction.triggered.connect(
+            self.metaguide_kepub_selection if config.prefs['default_action'] == 'kepub'
+            else self.metaguide_epub_selection
+        )
