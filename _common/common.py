@@ -25,6 +25,8 @@ from polyglot.io import PolyglotStringIO
 if is_py3:
     from typing import List
 
+GUI_PLUGIN_NAME = "Epub Metaguider GUI (intellireading.com)"
+
 
 class Logger:
     LEVELS = {"DEBUG": 0, "INFO": 1, "WARN": 2, "ERROR": 3}
