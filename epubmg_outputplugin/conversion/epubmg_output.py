@@ -36,8 +36,9 @@ class MetaguidedEpubOutput(EPUBOutput):
     version = (1, 1, 0)
     file_type = "epub"
     minimum_calibre_version = (6, 5, 0)
-    on_postprocess = True  # Run this plugin after conversion is complete
-    on_import = True  # Run this plugin on import
+    on_postprocess = True
+      # Run this plugin after conversion is complete
+    on_import = False  # Run this plugin on import
     commit_name = "epubmg_output"
 
     epubmg_options: Set[OptionRecommendation] = {
