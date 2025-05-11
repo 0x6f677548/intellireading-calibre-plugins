@@ -120,7 +120,7 @@ class InterfacePlugin(InterfaceAction):
             if not question_dialog(
                 self.gui,
                 "Metaguiding will modify your files",
-                "This feature will modify your files by adding metaguiding to them. "
+                "This feature will modify your files by adding metaguiding. "
                 "The original file will be saved as ORIGINAL_format (ex: ORIGINAL_EPUB), and the new file will overwrite the original file. "
                 "Any previous ORIGINAL_format file will be overwritten and lost. "
                 "Please make sure to backup your library before using this feature.\n\n"
@@ -183,6 +183,16 @@ class InterfacePlugin(InterfaceAction):
                         % (format_to_find, book_id),
                         show=True,
                     )
+        
+        # If we are here, it means that we have processed all the files
+        # check if we have processed any files
+        if epubs_found_count == 0:
+            return error_dialog(
+                self.gui,
+                f"Cannot {action_text}",
+                "No books with format %s found" % (format_to_find),
+                show=True,
+            )
 
         info_dialog(
             self.gui,
