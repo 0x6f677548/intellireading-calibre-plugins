@@ -26,7 +26,7 @@ class MetaguidedEpubFileType(FileTypePlugin):
     )
     supported_platforms = ["windows", "osx", "linux"]
     author = "Hugo Batista"
-    version = (1, 1, 0)
+    version = (2, 1, 0)
     file_types = set(["epub", "kepub"])
     minimum_calibre_version = (6, 5, 0)
 

@@ -34,7 +34,7 @@ class InterfacePluginWrapper(InterfaceActionBase):
     description = "Adds a button to toolbar and context menu, to convert epub and kepub files to a metaguided format, improving your focus and reading speed (sometimes called bionic reading)."
     supported_platforms = ["windows", "osx", "linux"]
     author = "Hugo Batista"
-    version = (1, 1, 0)
+    version = (2, 1, 0)
     minimum_calibre_version = (6, 5, 0)
 
     #: This field defines the GUI plugin class that contains all the code
