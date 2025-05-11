@@ -16,10 +16,11 @@ __docformat__ = "markdown en"
 
 
 class MetaguidedEpubFileType(FileTypePlugin):
-    """Plugin to convert epub files to metaguided epub files."""
 
     name = "Epub Metaguider post processor (intellireading.com)"
-    description = "Works on post conversion/import and converts epub files to a metaguided format, improving your focus and reading speed (sometimes called bionic reading)."
+    description = "Works on post conversion/import and converts epub files to a metaguided format, improving your focus and reading speed (sometimes called bionic reading)." \
+        " This plugin is for ADVANCED users only. It is not recommended for beginners. If you are new to metaguiding, please use the " \
+        + common.GUI_PLUGIN_NAME + " plugin instead."
     supported_platforms = ["windows", "osx", "linux"]
     author = "Hugo Batista"
     version = (1, 1, 0)
