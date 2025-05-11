@@ -5,6 +5,7 @@ echo "Copying common.py..."
 cp -f ./_common/common.py ./epubmg_filetypeplugin/common.py
 cp -f ./_common/common.py ./epubmg_outputplugin/common.py
 cp -f ./_common/common.py ./epubmg_interfaceplugin/common.py
+cp -f ./_common/common.py ./kobotouch_metaguiderplugin/common.py
 
 # Check if metaguiding.py exists or if the user wants to update it
 update_metaguiding="no"
@@ -53,6 +54,7 @@ if [ -f "./_common/metaguiding.py" ]; then
     cp -f ./_common/metaguiding.py ./epubmg_filetypeplugin/metaguiding.py
     cp -f ./_common/metaguiding.py ./epubmg_outputplugin/metaguiding.py
     cp -f ./_common/metaguiding.py ./epubmg_interfaceplugin/metaguiding.py
+    cp -f ./_common/metaguiding.py ./kobotouch_metaguiderplugin/metaguiding.py
 else
     echo "Warning: _common/metaguiding.py not found or update failed. Skipping copy to plugins."
 fi

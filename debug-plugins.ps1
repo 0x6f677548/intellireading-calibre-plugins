@@ -27,6 +27,7 @@ $plugins = @(
     @("Epub Metaguider post processor (intellireading.com)",'.\epubmg_filetypeplugin\'),
     @("Epub Metaguider output format (intellireading.com)", '.\epubmg_outputplugin\'),
     @("Epub Metaguider GUI (intellireading.com)", '.\epubmg_interfaceplugin\')
+    @("KoboTouch Metaguider plugin (intellireading.com)",'.\kobotouch_metaguiderplugin\'),
 )
 
 

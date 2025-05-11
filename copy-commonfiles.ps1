@@ -2,6 +2,7 @@
 Copy-Item -Path .\_common\common.py -Destination .\epubmg_filetypeplugin\common.py -Force
 Copy-Item -Path .\_common\common.py -Destination .\epubmg_outputplugin\common.py -Force
 Copy-Item -Path .\_common\common.py -Destination .\epubmg_interfaceplugin\common.py -Force
+Copy-Item -Path .\_common\common.py -Destination .\kobotouch_metaguiderplugin\common.py -Force
 
 # check if the metaguiding.py exists in the common folder or if the user wants to update it
 if (-not (Test-Path .\_common\metaguiding.py) -or (Read-Host "Do you want to update metaguiding.py? (yes/no)") -eq "yes") {
@@ -23,5 +24,6 @@ if (-not (Test-Path .\_common\metaguiding.py) -or (Read-Host "Do you want to upd
 Copy-Item -Path .\_common\metaguiding.py -Destination .\epubmg_filetypeplugin\metaguiding.py -Force
 Copy-Item -Path .\_common\metaguiding.py -Destination .\epubmg_outputplugin\metaguiding.py -Force
 Copy-Item -Path .\_common\metaguiding.py -Destination .\epubmg_interfaceplugin\metaguiding.py -Force
+Copy-Item -Path .\_common\metaguiding.py -Destination .\kobotouch_metaguiderplugin\metaguiding.py -Force
 
 

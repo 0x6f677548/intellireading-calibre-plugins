@@ -47,12 +47,14 @@ plugin_names=(
     "Epub Metaguider post processor (intellireading.com)"
     "Epub Metaguider output format (intellireading.com)"
     "Epub Metaguider GUI (intellireading.com)"
+    "KoboTouch Metaguider (intellireading.com)"
 )
 
 plugin_paths=(
     "./epubmg_filetypeplugin/"
     "./epubmg_outputplugin/"
     "./epubmg_interfaceplugin/"
+    "./kobotouch_metaguiderplugin/"
 )
 
 # Get the number of elements
