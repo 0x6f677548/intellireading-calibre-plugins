@@ -73,7 +73,8 @@ class InterfacePlugin(InterfaceAction):
 
         # Add default action based on configuration
         self.qaction.triggered.connect(
-            self.metaguide_kepub_selection if config.prefs['default_action'] == 'kepub'
+            self.metaguide_kepub_selection
+            if config.prefs["default_action"] == "kepub"
             else self.metaguide_epub_selection
         )
 
@@ -187,7 +188,7 @@ class InterfacePlugin(InterfaceAction):
                         % (format_to_find, book_id),
                         show=True,
                     )
-        
+
         # If we are here, it means that we have processed all the files
         # check if we have processed any files
         if epubs_found_count == 0:
@@ -217,7 +218,7 @@ class InterfacePlugin(InterfaceAction):
 
     def remove_metaguiding_epub_selection(self):
         self.metaguide_selection_format("epub", remove_metaguiding=True)
-        
+
     def apply_settings(self):
         """
         Called when the plugin's configuration has been changed.
@@ -225,6 +226,7 @@ class InterfacePlugin(InterfaceAction):
         """
         self.qaction.triggered.disconnect()
         self.qaction.triggered.connect(
-            self.metaguide_kepub_selection if config.prefs['default_action'] == 'kepub'
+            self.metaguide_kepub_selection
+            if config.prefs["default_action"] == "kepub"
             else self.metaguide_epub_selection
         )

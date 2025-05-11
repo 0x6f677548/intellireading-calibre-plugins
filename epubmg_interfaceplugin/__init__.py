@@ -27,6 +27,7 @@ class InterfacePluginWrapper(InterfaceActionBase):
         if and only if the method returns True.
         """
         from calibre_plugins.epubmginterface.config_ui import ConfigWidget
+
         return ConfigWidget(None)
 
     name = "Epub Metaguider GUI (intellireading.com)"
@@ -54,13 +55,15 @@ class InterfacePluginWrapper(InterfaceActionBase):
         By default raise a NotImplementedError, which indicates that
         the plugin does not require customization.
         """
-        return 'This plugin can be customized to change the default action when clicking the toolbar button. '\
-               'You can choose whether clicking the button should create a metaguided epub or kepub file.'
-               
+        return (
+            "This plugin can be customized to change the default action when clicking the toolbar button. "
+            "You can choose whether clicking the button should create a metaguided epub or kepub file."
+        )
+
     def save_settings(self, config_widget):
         """
         Save the settings specified by the user with config_widget.
-        
+
         :param config_widget: The widget returned by :meth:`config_widget`
         """
         config_widget.save_settings()

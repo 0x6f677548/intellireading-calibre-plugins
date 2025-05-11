@@ -13,6 +13,7 @@ except ImportError:
 
 from calibre_plugins.epubmginterface.config import prefs
 
+
 class ConfigWidget(QWidget):
     """Configuration widget for the Epub Metaguider interface plugin."""
 
@@ -24,28 +25,28 @@ class ConfigWidget(QWidget):
         # Default action settings
         action_group = QGroupBox("Default Action")
         action_layout = QVBoxLayout()
-        
+
         # Epub radio button
-        self.epub_radio = QRadioButton('Metaguide epub', self)
-        self.epub_radio.setChecked(prefs['default_action'] == 'epub')
+        self.epub_radio = QRadioButton("Metaguide epub", self)
+        self.epub_radio.setChecked(prefs["default_action"] == "epub")
         action_layout.addWidget(self.epub_radio)
 
         # Kepub radio button
-        self.kepub_radio = QRadioButton('Metaguide kepub', self)
-        self.kepub_radio.setChecked(prefs['default_action'] == 'kepub')
+        self.kepub_radio = QRadioButton("Metaguide kepub", self)
+        self.kepub_radio.setChecked(prefs["default_action"] == "kepub")
         action_layout.addWidget(self.kepub_radio)
-        
+
         action_group.setLayout(action_layout)
         self.layout.addWidget(action_group)
 
         # Add info label
         info_label = QLabel(
-            'Note: This setting affects which action is performed when clicking the toolbar button.'
+            "Note: This setting affects which action is performed when clicking the toolbar button."
         )
         self.layout.addWidget(info_label)
-        
+
         self.layout.addStretch()
 
     def save_settings(self):
         """Save the current configuration."""
-        prefs['default_action'] = 'kepub' if self.kepub_radio.isChecked() else 'epub'
+        prefs["default_action"] = "kepub" if self.kepub_radio.isChecked() else "epub"

@@ -30,9 +30,11 @@ class MetaguidedEpubOutput(EPUBOutput):
     # pylint:disable=undefined-variable
 
     name = "Epub Metaguider output format (intellireading.com)"
-    description = "Adds additional options to Epub Output conversion, enabling epub files conversion to a metaguided format, improving your focus and reading speed (sometimes called bionic reading)." \
+    description = (
+        "Adds additional options to Epub Output conversion, enabling epub files conversion to a metaguided format, improving your focus and reading speed (sometimes called bionic reading)."
         " This plugin is for ADVANCED users only. It is not recommended for beginners. If you are new to metaguiding, please use the ' \
-        + \'common.GUI_PLUGIN_NAME + '\' plugin instead."
+        + 'common.GUI_PLUGIN_NAME + '' plugin instead."
+    )
 
     supported_platforms = ["windows", "osx", "linux"]
     author = "Hugo Batista"
@@ -40,7 +42,7 @@ class MetaguidedEpubOutput(EPUBOutput):
     file_type = "epub"
     minimum_calibre_version = (6, 5, 0)
     on_postprocess = True
-      # Run this plugin after conversion is complete
+    # Run this plugin after conversion is complete
     on_import = False  # Run this plugin on import
     commit_name = "epubmg_output"
 

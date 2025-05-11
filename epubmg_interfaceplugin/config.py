@@ -10,7 +10,7 @@ from calibre.utils.config import JSONConfig
 # This is where all preferences for this plugin will be stored
 # Remember that this name (epubmginterface) must be unique
 # as calibre creates global config files using it
-prefs = JSONConfig('plugins/epubmginterface')
+prefs = JSONConfig("plugins/epubmginterface")
 
 # Set defaults
-prefs.defaults['default_action'] = 'epub'  # can be 'epub' or 'kepub'
+prefs.defaults["default_action"] = "epub"  # can be 'epub' or 'kepub'
