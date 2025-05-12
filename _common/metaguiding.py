@@ -1,16 +1,62 @@
 import logging
 from io import BytesIO
 import os
+import sys
+import traceback
 import zipfile
 from typing import Generator
 import math
 import regex as re
+# relative import is used to ensure that when this module gets copied to another location
+# it still works
+from .__about_cli__ import __version__ as cli_version # noqa: TID252
 
 
 _logger = logging.getLogger(__name__)
 _METAGUIDED_FLAG_FILENAME = "intellireading.metaguide"
 _EPUB_EXTENSIONS = [".EPUB", ".KEPUB"]
 _XHTML_EXTENSIONS = [".XHTML", ".HTML", ".HTM"]
+
+
+def _generate_flag_file_content() -> bytes:
+    """Generate the content for the metaguiding flag file.
+    This includes version, process name, and call graph information.
+
+    Returns:
+        bytes: The encoded content of the flag file.
+    """
+    try:
+        # Get process name - fallback to 'unknown' if sys.argv is not available
+        try:
+            process_name = os.path.basename(sys.argv[0])
+        except (AttributeError, IndexError):
+            process_name = "unknown"
+            _logger.warning("Could not determine process name, using 'unknown'")
+
+        # Get call stack information - handle potential traceback errors
+        try:
+            call_frames = traceback.extract_stack()
+            # Skip the last frame (current function) and metaguide_epub_stream frame
+            relevant_frames = call_frames[:-2]
+            call_graph_path = " -> ".join(
+                f"{os.path.basename(frame.filename)}:{frame.name}"
+                for frame in relevant_frames
+            )
+        except Exception as e:
+            call_graph_path = "unknown"
+            _logger.warning(f"Could not generate call graph: {e}")
+
+        # Build and return the flag content
+        flag_lines = [
+            f"version: {cli_version}",
+            f"process: {process_name}",
+            f"call_graph: {call_graph_path}"
+        ]
+        return "\n".join(flag_lines).encode()
+    except Exception as e:
+        # If anything goes wrong, return a minimal flag file rather than failing
+        _logger.error(f"Error generating flag file content: {e}")
+        return f"version: {cli_version}\nprocess: unknown\ncall_graph: error".encode()
 
 
 class RegExBoldMetaguider:
@@ -90,9 +136,7 @@ class RegExBoldMetaguider:
                 body,
             )
         else:
-            body = self._bolded_text_block_regex.sub(
-                lambda m: self._unbold_node_text_part(m.group()), body
-            )
+            body = self._bolded_text_block_regex.sub(lambda m: self._unbold_node_text_part(m.group()), body)
 
         _logger.debug(f"Bolded body: {body}")
 
@@ -103,9 +147,7 @@ class RegExBoldMetaguider:
         from lxml import etree
 
         parser = etree.XMLParser(resolve_entities=False)
-        doc = etree.fromstring(
-            xhtml_document, parser=parser
-        ).getroottree()  # noqa: S320
+        doc = etree.fromstring(xhtml_document, parser=parser).getroottree()  # noqa: S320
         docinfo = doc.docinfo
         return docinfo.encoding
 
@@ -134,9 +176,7 @@ class RegExBoldMetaguider:
             raise ValueError(msg)
 
         header = xhtml_document[:xml_header_end].decode("utf-8")
-        match = re.search(
-            r'encoding=(["\'])([a-zA-Z][a-zA-Z0-9-]{0,38}[a-zA-Z0-9])\1', header
-        )
+        match = re.search(r'encoding=(["\'])([a-zA-Z][a-zA-Z0-9-]{0,38}[a-zA-Z0-9])\1', header)
         if match:
             return match.group(2)
         else:
@@ -163,9 +203,7 @@ class RegExBoldMetaguider:
 
         return encoding or self._fallback_encoding
 
-    def metaguide_xhtml_document(
-        self, xhtml_document: bytes, *, remove_metaguiding: bool = False
-    ) -> bytes:
+    def metaguide_xhtml_document(self, xhtml_document: bytes, *, remove_metaguiding: bool = False) -> bytes:
         # if none of the methods to detect the encoding work, use utf-8
         encoding = self._get_encoding(xhtml_document) or "utf-8"
 
@@ -179,9 +217,7 @@ class _EpubItemFile:
     def __init__(self, filename: str | None = None, content: bytes = b"") -> None:
         self.filename = filename
         self.content = content
-        _extension = (
-            self.filename and os.path.splitext(self.filename)[-1].upper()
-        ) or None
+        _extension = (self.filename and os.path.splitext(self.filename)[-1].upper()) or None
 
         # some epub have files with html extension but they are xml files
         self.is_xhtml_document = _extension in _XHTML_EXTENSIONS
@@ -190,16 +226,12 @@ class _EpubItemFile:
     def __str__(self) -> str:
         return f"{self.filename} ({len(self.content)} bytes)"
 
-    def metaguide(
-        self, metaguider: RegExBoldMetaguider, *, remove_metaguiding: bool = False
-    ):
+    def metaguide(self, metaguider: RegExBoldMetaguider, *, remove_metaguiding: bool = False):
         if not remove_metaguiding and self.metaguided:
             _logger.warning(f"File {self.filename} already metaguided, skipping")
         elif self.is_xhtml_document:
             _logger.debug(f"Metaguiding file {self.filename}")
-            self.content = metaguider.metaguide_xhtml_document(
-                self.content, remove_metaguiding=remove_metaguiding
-            )
+            self.content = metaguider.metaguide_xhtml_document(self.content, remove_metaguiding=remove_metaguiding)
             self.metaguided = True
             _logger.debug(f"Metaguided file {self.filename}")
         else:
@@ -210,14 +242,10 @@ _metaguider = RegExBoldMetaguider()
 
 
 def _get_epub_item_files_from_zip(input_zip: zipfile.ZipFile) -> list:
-    def read_compressed_file(
-        input_zip: zipfile.ZipFile, filename: str
-    ) -> _EpubItemFile:
+    def read_compressed_file(input_zip: zipfile.ZipFile, filename: str) -> _EpubItemFile:
         return _EpubItemFile(filename, input_zip.read(filename))
 
-    epub_item_files = [
-        read_compressed_file(input_zip, f.filename) for f in input_zip.infolist()
-    ]
+    epub_item_files = [read_compressed_file(input_zip, f.filename) for f in input_zip.infolist()]
     _logger.debug("Read %d files from input file", len(epub_item_files))
     return epub_item_files
 
@@ -226,27 +254,19 @@ def _process_epub_item_files(
     epub_item_files: list[_EpubItemFile], *, remove_metaguiding: bool = False
 ) -> Generator[_EpubItemFile, None, None]:
     for epub_item_file in epub_item_files:
-        _logger.debug(
-            f"Processing file '{epub_item_file.filename}' remove_metaguiding={remove_metaguiding}"
-        )
+        _logger.debug(f"Processing file '{epub_item_file.filename}' remove_metaguiding={remove_metaguiding}")
         epub_item_file.metaguide(_metaguider, remove_metaguiding=remove_metaguiding)
         yield epub_item_file
 
 
 def _write_item_files_to_zip(epub_item_files, output_zip):
-    def write_compressed_file(
-        output_zip: zipfile.ZipFile, epub_item_file: _EpubItemFile
-    ):
+    def write_compressed_file(output_zip: zipfile.ZipFile, epub_item_file: _EpubItemFile):
         if epub_item_file.filename is None:
             msg = "EpubItemFile.filename is None"
             raise ValueError(msg)
 
-        _logger.debug(
-            f"Writing file {epub_item_file.filename} to output zip {output_zip.filename}"
-        )
-        with output_zip.open(
-            epub_item_file.filename, mode="w"
-        ) as compressed_output_file:
+        _logger.debug(f"Writing file {epub_item_file.filename} to output zip {output_zip.filename}")
+        with output_zip.open(epub_item_file.filename, mode="w") as compressed_output_file:
             compressed_output_file.write(epub_item_file.content)
 
     for _epub_item_file in epub_item_files:
@@ -263,16 +283,12 @@ def _ensure_file_exists(input_file: str):
 def _ensure_allowed_extension(input_file: str, extensions: list[str]):
     file_extension = os.path.splitext(input_file)[-1].upper()
     if file_extension not in extensions:
-        exception_message = (
-            f"Input file '{input_file}' extension is not in {extensions}"
-        )
+        exception_message = f"Input file '{input_file}' extension is not in {extensions}"
         _logger.error(exception_message)
         raise ValueError(exception_message)
 
 
-def metaguide_epub_file(
-    input_file: str, output_file: str, *, remove_metaguiding: bool = False
-):
+def metaguide_epub_file(input_file: str, output_file: str, *, remove_metaguiding: bool = False):
     """Metaguide an epub file
     input_file: str
         The input epub file
@@ -288,16 +304,12 @@ def metaguide_epub_file(
 
     with open(input_file, "rb") as input_reader:
         input_file_stream = BytesIO(input_reader.read())
-        output_file_stream = metaguide_epub_stream(
-            input_file_stream, remove_metaguiding=remove_metaguiding
-        )
+        output_file_stream = metaguide_epub_stream(input_file_stream, remove_metaguiding=remove_metaguiding)
         with open(output_file, "wb") as output_writer:
             output_writer.write(output_file_stream.read())
 
 
-def metaguide_epub_stream(
-    input_stream: BytesIO, *, remove_metaguiding: bool = False
-) -> BytesIO:
+def metaguide_epub_stream(input_stream: BytesIO, *, remove_metaguiding: bool = False) -> BytesIO:
     """Metaguide an epub input stream
     input_file_stream: BytesIO
         The input epub file stream
@@ -314,43 +326,31 @@ def metaguide_epub_stream(
         _logger.debug("Metaguiding epub")
 
     _logger.debug("Getting item files")
-    with zipfile.ZipFile(
-        input_stream, "r", compression=zipfile.ZIP_DEFLATED, allowZip64=True
-    ) as input_zip:
-        with zipfile.ZipFile(
-            output_stream, "w", compression=zipfile.ZIP_DEFLATED, allowZip64=True
-        ) as output_zip:
+    with zipfile.ZipFile(input_stream, "r", compression=zipfile.ZIP_DEFLATED, allowZip64=True) as input_zip:
+        with zipfile.ZipFile(output_stream, "w", compression=zipfile.ZIP_DEFLATED, allowZip64=True) as output_zip:
             _logger.debug("Processing zip: Getting item files")
             epub_item_files = _get_epub_item_files_from_zip(input_zip)
 
             # check if we are metaguiding and have _METAGUIDED_FLAG_FILENAME in the epub
             # if we do, this file has been metaguided already
-            if not remove_metaguiding and any(
-                f.filename == _METAGUIDED_FLAG_FILENAME for f in epub_item_files
-            ):
+            if not remove_metaguiding and any(f.filename == _METAGUIDED_FLAG_FILENAME for f in epub_item_files):
                 _logger.debug("Epub already metaguided, skipping...")
                 # copy the input stream to the output stream
                 input_stream.seek(0)
                 output_stream.write(input_stream.read())
             else:
                 processed_item_files = list(
-                    _process_epub_item_files(
-                        epub_item_files, remove_metaguiding=remove_metaguiding
-                    )
+                    _process_epub_item_files(epub_item_files, remove_metaguiding=remove_metaguiding)
                 )
 
                 if remove_metaguiding:
                     # remove the metaguided flag file
-                    filtered_files = filter(
-                        lambda f: f.filename != _METAGUIDED_FLAG_FILENAME,
-                        processed_item_files,
-                    )
+                    filtered_files = filter(lambda f: f.filename != _METAGUIDED_FLAG_FILENAME, processed_item_files)
                     processed_item_files = list(filtered_files)
                 else:
                     _logger.debug("Processing zip: Adding metaguided flag file")
-                    processed_item_files.append(
-                        _EpubItemFile(_METAGUIDED_FLAG_FILENAME)
-                    )
+                    flag_content = _generate_flag_file_content()
+                    processed_item_files.append(_EpubItemFile(_METAGUIDED_FLAG_FILENAME, flag_content))
 
                 _logger.debug("Processing zip: Writing output zip")
                 _write_item_files_to_zip(processed_item_files, output_zip)
@@ -359,9 +359,7 @@ def metaguide_epub_stream(
     return output_stream
 
 
-def metaguide_xhtml_file(
-    input_file: str, output_file: str, *, remove_metaguiding: bool = False
-):
+def metaguide_xhtml_file(input_file: str, output_file: str, *, remove_metaguiding: bool = False):
     """Metaguide an xhtml file
     input_file: str
         The input xhtml file
@@ -376,17 +374,13 @@ def metaguide_xhtml_file(
 
     with open(input_file, "rb") as input_reader:
         input_file_stream = BytesIO(input_reader.read())
-        output_file_stream = metaguide_xhtml_stream(
-            input_file_stream, remove_metaguiding=remove_metaguiding
-        )
+        output_file_stream = metaguide_xhtml_stream(input_file_stream, remove_metaguiding=remove_metaguiding)
     output_file_stream.seek(0)
     with open(output_file, "wb") as output_writer:
         output_writer.write(output_file_stream.read())
 
 
-def metaguide_xhtml_stream(
-    input_file_stream: BytesIO, *, remove_metaguiding: bool = False
-) -> BytesIO:
+def metaguide_xhtml_stream(input_file_stream: BytesIO, *, remove_metaguiding: bool = False) -> BytesIO:
     """Metaguide an xhtml input stream
     input_file_stream: BytesIO
         The input xhtml file stream
@@ -397,9 +391,7 @@ def metaguide_xhtml_stream(
     """
     output_file_stream = BytesIO()
     output_file_stream.write(
-        _metaguider.metaguide_xhtml_document(
-            input_file_stream.read(), remove_metaguiding=remove_metaguiding
-        )
+        _metaguider.metaguide_xhtml_document(input_file_stream.read(), remove_metaguiding=remove_metaguiding)
     )
     output_file_stream.seek(0)
     return output_file_stream
@@ -422,9 +414,7 @@ def metaguide_dir(input_dir: str, output_dir: str, *, remove_metaguiding: bool =
             input_filename = os.path.join(directory, filename)
 
             extension = os.path.splitext(input_filename)[-1].upper()
-            if os.path.isfile(input_filename) and (
-                extension in _EPUB_EXTENSIONS or extension in _XHTML_EXTENSIONS
-            ):
+            if os.path.isfile(input_filename) and (extension in _EPUB_EXTENSIONS or extension in _XHTML_EXTENSIONS):
                 yield input_filename
             elif os.path.isdir(input_filename) and recursive:
                 yield from get_files(input_filename, recursive)
@@ -446,9 +436,7 @@ def metaguide_dir(input_dir: str, output_dir: str, *, remove_metaguiding: bool =
 
         # verify if the output file already exists
         if os.path.isfile(output_filename):
-            _logger.warning(
-                f"Skipping {input_filename} because {output_filename} already exists"
-            )
+            _logger.warning(f"Skipping {input_filename} because {output_filename} already exists")
             files_skipped += 1
             continue
 
@@ -456,9 +444,7 @@ def metaguide_dir(input_dir: str, output_dir: str, *, remove_metaguiding: bool =
             with open(input_filename, "rb") as input_reader:
                 input_file_stream = BytesIO(input_reader.read())
                 if os.path.splitext(input_filename)[-1].upper() in _EPUB_EXTENSIONS:
-                    output_file_stream = metaguide_epub_stream(
-                        input_file_stream, remove_metaguiding=remove_metaguiding
-                    )
+                    output_file_stream = metaguide_epub_stream(input_file_stream, remove_metaguiding=remove_metaguiding)
                 else:
                     output_file_stream = metaguide_xhtml_stream(
                         input_file_stream, remove_metaguiding=remove_metaguiding
