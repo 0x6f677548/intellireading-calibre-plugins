@@ -100,16 +100,17 @@ class InterfacePlugin(InterfaceAction):
             )
             config.prefs["show_kobotouch_message"] = show_message
 
-    def metaguide_selection_format(self, format_to_find: str, *, remove_metaguiding: bool = False):
-        from calibre.gui2 import error_dialog
-
-        # Show KoboTouch message if enabled
-        self._show_kobotouch_message_if_enabled()
-
-        # warn the user that remove_metaguiding is an EXPERIMENTAL feature and
-        # that it may not work as expected.
+    def _show_warning_dialog(self, remove_metaguiding: bool) -> bool:
+        """Show a warning dialog to the user before proceeding with metaguiding operations.
+        
+        Args:
+            remove_metaguiding: Whether we're removing metaguiding (True) or adding it (False)
+            
+        Returns:
+            bool: True if the user wants to proceed, False if they want to cancel
+        """
         if remove_metaguiding:
-            if not question_dialog(
+            return question_dialog(
                 self.gui,
                 "Remove metaguiding is an EXPERIMENTAL feature",
                 "This feature is still in development and may not work as expected. "
@@ -119,10 +120,9 @@ class InterfacePlugin(InterfaceAction):
                 "Do you want to continue?",
                 show_copy_button=True,
                 default_yes=False,
-            ):
-                return
+            )
         else:
-            if not question_dialog(
+            return question_dialog(
                 self.gui,
                 "Metaguiding will modify your files",
                 "This feature will modify your files by adding metaguiding. "
@@ -132,8 +132,74 @@ class InterfacePlugin(InterfaceAction):
                 "Do you want to continue?",
                 show_copy_button=True,
                 default_yes=False,
-            ):
-                return
+            )
+
+    def _process_single_book(self, current_database, book_id, format_to_find, action_text, remove_metaguiding):
+        from calibre.gui2 import error_dialog
+        """Process a single book for metaguiding operations.
+        
+        Args:
+            current_database: The current calibre database
+            book_id: The ID of the book to process
+            format_to_find: The format to look for (epub/kepub)
+            action_text: Text describing the action being performed
+            remove_metaguiding: Whether to remove metaguiding
+            
+        Returns:
+            bool: True if successful, False if an error occurred
+        """
+        temp_file = current_database.format(book_id, format_to_find, as_path=True)
+        book_title = current_database.field_for("title", book_id)
+        common.log.debug("Converting book id: %d, format: %s" % (book_id, format_to_find))
+
+        self.gui.status_bar.show_message(f'{action_text.title()} "{book_title}"...', 500)
+        try:
+
+            if metaguiding.is_file_metaguided(temp_file):
+                common.log.debug(f"File {temp_file} is already metaguided, skipping.")
+                # Show warning dialog about metaguided epub performance on Kobo
+                self.gui.status_bar.show_message(
+                    f'"{book_title}" is already metaguided. Skipping...', 1000
+                )
+                return True
+
+            metaguiding.metaguide_epub_file(temp_file, temp_file, remove_metaguiding=remove_metaguiding)
+        except Exception as e:  # pylint: disable=broad-except
+            common.log.error("Error processing book id: %d, format: %s" % (book_id, format_to_find))
+            common.log.error(e)
+            self.gui.status_bar.show_message(f'{action_text} "{book_title} failed!": {str(e)}', 5000)
+            error_dialog(
+                self.gui,
+                f"Cannot {action_text}. Please verify that the epub is valid.",
+                "Error processing book id: %d, format: %s, error details: %s" % (book_id, format_to_find, e),
+                show=True,
+            )
+            return False
+
+        self.gui.status_bar.show_message(f'{action_text} "{book_title} success."', 3000)
+        current_database.save_original_format(book_id, format_to_find)
+        result = current_database.add_format(book_id, format_to_find, temp_file, replace=True, run_hooks=False)
+
+        if not result:
+            error_dialog(
+                self.gui,
+                f"Failed to {action_text}",
+                f"Failed to {action_text} format %s to book id %d" % (format_to_find, book_id),
+                show=True,
+            )
+            return False
+            
+        return True
+
+    def metaguide_selection_format(self, format_to_find: str, *, remove_metaguiding: bool = False):
+        from calibre.gui2 import error_dialog
+
+        # Show KoboTouch message if enabled
+        self._show_kobotouch_message_if_enabled()
+
+        # Show warning dialog
+        if not self._show_warning_dialog(remove_metaguiding):
+            return
 
         action_text = "remove metaguiding" if remove_metaguiding else "add metaguiding"
 
@@ -141,43 +207,17 @@ class InterfacePlugin(InterfaceAction):
         selected_rows = self.gui.library_view.selectionModel().selectedRows()
         if not selected_rows or len(selected_rows) == 0:
             return error_dialog(self.gui, f"Cannot {action_text}", "No books selected", show=True)
+        
         # Map the rows to book ids
         selected_ids = list(map(self.gui.library_view.model().id, selected_rows))
         current_database = self.gui.current_db.new_api
         epubs_found_count = 0
+        
         for book_id in selected_ids:
             if current_database.has_format(book_id, format_to_find):
                 epubs_found_count += 1
-                temp_file = current_database.format(book_id, format_to_find, as_path=True)
-                # Get the book title for status messages
-                book_title = current_database.field_for("title", book_id)
-                common.log.debug("Converting book id: %d, format: %s" % (book_id, format_to_find))
-
-                self.gui.status_bar.show_message(f'{action_text.title()} "{book_title}"...', 1000)
-                try:
-                    metaguiding.metaguide_epub_file(temp_file, temp_file, remove_metaguiding=remove_metaguiding)
-                except Exception as e:  # pylint: disable=broad-except
-                    common.log.error("Error processing book id: %d, format: %s" % (book_id, format_to_find))
-                    common.log.error(e)
-                    self.gui.status_bar.show_message(f'{action_text} "{book_title} failed!": {str(e)}', 5000)
-                    return error_dialog(
-                        self.gui,
-                        f"Cannot {action_text}. Please verify that the epub is valid.",
-                        "Error processing book id: %d, format: %s, error details: %s" % (book_id, format_to_find, e),
-                        show=True,
-                    )
-
-                self.gui.status_bar.show_message(f'{action_text} "{book_title} success."', 3000)
-                current_database.save_original_format(book_id, format_to_find)
-                result = current_database.add_format(book_id, format_to_find, temp_file, replace=True, run_hooks=False)
-
-                if not result:
-                    return error_dialog(
-                        self.gui,
-                        f"Failed to {action_text}",
-                        f"Failed to {action_text} format %s to book id %d" % (format_to_find, book_id),
-                        show=True,
-                    )
+                if not self._process_single_book(current_database, book_id, format_to_find, action_text, remove_metaguiding):
+                    return
 
         # If we are here, it means that we have processed all the files
         # check if we have processed any files
