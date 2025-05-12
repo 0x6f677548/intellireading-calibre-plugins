@@ -53,29 +53,29 @@ class InterfacePlugin(InterfaceAction):
         if self.menu is None:
             self.menu = QMenu()
             self.qaction.setMenu(self.menu)
-            
+
         # Add default action based on configuration
         self.qaction.triggered.connect(
             self.metaguide_kepub_selection
             if config.prefs["default_action"] == "kepub"
             else self.metaguide_epub_selection
         )
-        
+
         # Add epub action to menu
         epub_action = self.menu.addAction(_("Metaguide epub"))  # type: ignore # noqa
         epub_action.triggered.connect(self.metaguide_epub_selection)
-        
+
         # Add kepub action to menu
         kepub_action = self.menu.addAction(_("Metaguide kepub"))  # type: ignore # noqa
         kepub_action.triggered.connect(self.metaguide_kepub_selection)
-        
+
         # Add separator
         self.menu.addSeparator()
-        
+
         # Add remove metaguiding action to menu
         remove_metaguiding_action = self.menu.addAction(_("Remove metaguiding"))  # type: ignore # noqa
         remove_metaguiding_action.triggered.connect(self.remove_metaguiding_epub_selection)
-        
+
         # point the metaguiding logger to the common logger
         metaguiding._logger = common.log
 
@@ -96,7 +96,7 @@ class InterfacePlugin(InterfaceAction):
                 show_copy_button=True,
                 default_yes=False,  # False makes "Don't show again" the default
                 yes_text=_("Show again"),  # type: ignore # noqa
-                no_text=_("Don't show again")  # type: ignore # noqa
+                no_text=_("Don't show again"),  # type: ignore # noqa
             )
             config.prefs["show_kobotouch_message"] = show_message
 
@@ -150,7 +150,7 @@ class InterfacePlugin(InterfaceAction):
                 epubs_found_count += 1
                 temp_file = current_database.format(book_id, format_to_find, as_path=True)
                 # Get the book title for status messages
-                book_title = current_database.field_for('title', book_id)
+                book_title = current_database.field_for("title", book_id)
                 common.log.debug("Converting book id: %d, format: %s" % (book_id, format_to_find))
 
                 self.gui.status_bar.show_message(f'{action_text.title()} "{book_title}"...', 1000)
@@ -195,7 +195,7 @@ class InterfacePlugin(InterfaceAction):
             "Successfully processed %d files from %d books" % (epubs_found_count, len(selected_ids)),
             show_copy_button=False,
             yes_text=_("OK"),  # type: ignore # noqa
-            no_text=None
+            no_text=None,
         )
         current_idx = self.gui.library_view.currentIndex()
         self.gui.library_view.model().current_changed(current_idx, current_idx)
