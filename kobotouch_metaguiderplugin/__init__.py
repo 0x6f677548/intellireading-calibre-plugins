@@ -2,6 +2,7 @@ from calibre.devices.kobo.driver import KOBOTOUCH
 from calibre_plugins.epubmgfiletype import (
     common,
     metaguiding,
+    __about_cli__,
 )
 
 
@@ -20,11 +21,12 @@ def metaguide_file(filepath):
 class KoboTouchMetaguider(KOBOTOUCH):
     name = "KoboTouch Metaguider (intellireading.com)"
     description = (
-        "Kobo Touch driver with metaguiding support for epub and kepub files."
+        "Kobo Touch driver with metaguiding support for epub and kepub files. "
         "This driver is a modified version of the KoboTouch driver from calibre, enabling "
         "conversion of epub and kepub files to a metaguiding format before "
         "uploading to the device. "
-        "This is done to improve your focus and reading speed (sometimes called bionic reading)."
+        "This is done to improve your focus and reading speed (sometimes called bionic reading)." \
+        " Intellireading CLI version: " + __about_cli__.__version__ + "."
     )
     supported_platforms = ["windows", "osx", "linux"]
     version = (2, 0, 0)

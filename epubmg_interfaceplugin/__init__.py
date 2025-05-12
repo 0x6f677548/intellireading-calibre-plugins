@@ -7,18 +7,12 @@ from calibre.customize import (
     InterfaceActionBase,
 )
 
+from calibre_plugins.epubmginterface import (
+    __about_cli__
+)
+
 
 class InterfacePluginWrapper(InterfaceActionBase):
-    """
-    This class is a simple wrapper that provides information about the actual
-    plugin class. The actual interface plugin class is called InterfacePlugin
-    and is defined in the ui.py file, as specified in the actual_plugin field
-    below.
-
-    The reason for having two classes is that it allows the command line
-    calibre utilities to run without needing to load the GUI libraries.
-    """
-
     def config_widget(self):
         """
         Implement this method and return a QWidget for configuring this plugin.
@@ -31,7 +25,10 @@ class InterfacePluginWrapper(InterfaceActionBase):
         return ConfigWidget(None)
 
     name = "Epub Metaguider GUI (intellireading.com)"
-    description = "Adds a button to toolbar and context menu, to convert epub and kepub files to a metaguided format, improving your focus and reading speed (sometimes called bionic reading)."
+    description = "Adds a button to toolbar and context menu, to convert epub and kepub files " \
+        "to a metaguided format, improving your focus and reading speed " \
+            "(sometimes called bionic reading)." \
+        " Intellireading CLI version: " + __about_cli__.__version__ + "."
     supported_platforms = ["windows", "osx", "linux"]
     author = "Hugo Batista"
     version = (2, 0, 0)
