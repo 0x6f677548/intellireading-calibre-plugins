@@ -284,6 +284,34 @@ def _ensure_allowed_extension(input_file: str, extensions: list[str]):
         raise ValueError(exception_message)
 
 
+def _check_flag_file(
+    epub_item_files: list[_EpubItemFile], *, remove_metaguiding: bool = False
+) -> tuple[bool, _EpubItemFile | None]:
+    """Check if an epub file is already metaguided by looking for the flag file.
+
+    Args:
+        epub_item_files: List of files in the epub
+        remove_metaguiding: Whether we're removing metaguiding
+
+    Returns:
+        Tuple of (is_already_metaguided, flag_file)
+    """
+    flag_file = next((f for f in epub_item_files if f.filename == _METAGUIDED_FLAG_FILENAME), None)
+    is_already_metaguided = not remove_metaguiding and flag_file is not None
+
+    if is_already_metaguided:
+        try:
+            _logger.debug("Epub already metaguided, flag file content:")
+            if flag_file:
+                _logger.debug(flag_file.content.decode("utf-8"))
+            else:
+                _logger.debug("Flag file found but content could not be read")
+        except Exception as e:
+            _logger.debug(f"Could not decode flag file content: {e}")
+
+    return is_already_metaguided, flag_file
+
+
 def metaguide_epub_file(input_file: str, output_file: str, *, remove_metaguiding: bool = False):
     """Metaguide an epub file
     input_file: str
@@ -327,13 +355,16 @@ def metaguide_epub_stream(input_stream: BytesIO, *, remove_metaguiding: bool = F
             _logger.debug("Processing zip: Getting item files")
             epub_item_files = _get_epub_item_files_from_zip(input_zip)
 
-            # check if we are metaguiding and have _METAGUIDED_FLAG_FILENAME in the epub
-            # if we do, this file has been metaguided already
-            if not remove_metaguiding and any(f.filename == _METAGUIDED_FLAG_FILENAME for f in epub_item_files):
-                _logger.debug("Epub already metaguided, skipping...")
-                # copy the input stream to the output stream
-                input_stream.seek(0)
-                output_stream.write(input_stream.read())
+            # Check if the file is already metaguided
+            is_already_metaguided, _ = _check_flag_file(epub_item_files, remove_metaguiding)
+
+            if is_already_metaguided:
+                _logger.debug("Copying files while preserving structure...")
+                # Even for already metaguided files, we need to properly process through zip mechanisms
+                for item in input_zip.filelist:
+                    with input_zip.open(item.filename) as source, output_zip.open(item.filename, "w") as target:
+                        _logger.debug(f"Copying file {item.filename} with original compression")
+                        target.write(source.read())
             else:
                 processed_item_files = list(
                     _process_epub_item_files(epub_item_files, remove_metaguiding=remove_metaguiding)
@@ -453,3 +484,26 @@ def metaguide_dir(input_dir: str, output_dir: str, *, remove_metaguiding: bool =
             files_with_errors += 1
             _logger.exception(f"Error processing {input_filename}", e)
             continue
+
+
+def is_file_metaguided(filepath: str) -> bool:
+    """Check if a file has already been metaguided.
+
+    Args:
+        filepath: Path to the epub file to check
+
+    Returns:
+        bool: True if the file has already been metaguided, False otherwise
+
+    Raises:
+        ValueError: If the file doesn't exist or has an invalid extension
+    """
+    _ensure_file_exists(filepath)
+    _ensure_allowed_extension(filepath, _EPUB_EXTENSIONS)
+
+    with open(filepath, "rb") as input_reader:
+        input_file_stream = BytesIO(input_reader.read())
+        with zipfile.ZipFile(input_file_stream, "r", compression=zipfile.ZIP_DEFLATED, allowZip64=True) as input_zip:
+            epub_item_files = _get_epub_item_files_from_zip(input_zip)
+            is_metaguided, _ = _check_flag_file(epub_item_files)
+            return is_metaguided
