@@ -25,7 +25,7 @@ class KoboTouchMetaguider(KOBOTOUCH):
         "This driver is a modified version of the KoboTouch driver from calibre, enabling "
         "conversion of epub and kepub files to a metaguiding format before "
         "uploading to the device. "
-        "This is done to improve your focus and reading speed (sometimes called bionic reading)." \
+        "This is done to improve your focus and reading speed (sometimes called bionic reading)."
         " Intellireading CLI version: " + __about_cli__.__version__ + "."
     )
     supported_platforms = ["windows", "osx", "linux"]

@@ -7,9 +7,7 @@ from calibre.customize import (
     InterfaceActionBase,
 )
 
-from calibre_plugins.epubmginterface import (
-    __about_cli__
-)
+from calibre_plugins.epubmginterface import __about_cli__
 
 
 class InterfacePluginWrapper(InterfaceActionBase):
@@ -25,10 +23,12 @@ class InterfacePluginWrapper(InterfaceActionBase):
         return ConfigWidget(None)
 
     name = "Epub Metaguider GUI (intellireading.com)"
-    description = "Adds a button to toolbar and context menu, to convert epub and kepub files " \
-        "to a metaguided format, improving your focus and reading speed " \
-            "(sometimes called bionic reading)." \
+    description = (
+        "Adds a button to toolbar and context menu, to convert epub and kepub files "
+        "to a metaguided format, improving your focus and reading speed "
+        "(sometimes called bionic reading)."
         " Intellireading CLI version: " + __about_cli__.__version__ + "."
+    )
     supported_platforms = ["windows", "osx", "linux"]
     author = "Hugo Batista"
     version = (2, 0, 0)
@@ -40,29 +40,15 @@ class InterfacePluginWrapper(InterfaceActionBase):
     actual_plugin = "calibre_plugins.epubmginterface.action:InterfacePlugin"
 
     def is_customizable(self):
-        """
-        This method must return True to enable customization via
-        Preferences->Plugins
-        """
         return True
 
     def customization_help(self, gui=False):
-        """
-        Return a string giving help on how to customize this plugin.
-        By default raise a NotImplementedError, which indicates that
-        the plugin does not require customization.
-        """
         return (
             "This plugin can be customized to change the default action when clicking the toolbar button. "
             "You can choose whether clicking the button should create a metaguided epub or kepub file."
         )
 
     def save_settings(self, config_widget):
-        """
-        Save the settings specified by the user with config_widget.
-
-        :param config_widget: The widget returned by :meth:`config_widget`
-        """
         config_widget.save_settings()
         # Apply the changes
         ac = self.actual_plugin_
