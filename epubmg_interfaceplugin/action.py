@@ -155,7 +155,7 @@ class InterfacePlugin(InterfaceAction):
         self.gui.status_bar.show_message(f'{action_text.title()} "{book_title}"...', 500)
         try:
 
-            if metaguiding.is_file_metaguided(temp_file):
+            if not remove_metaguiding and metaguiding.is_file_metaguided(temp_file):
                 common.log.debug(f"File {temp_file} is already metaguided, skipping.")
                 # Show warning dialog about metaguided epub performance on Kobo
                 self.gui.status_bar.show_message(
