@@ -37,17 +37,25 @@ class KoboTouchMetaguider(KOBOTOUCH):
         # Process each file before calling the base upload
         # only process epub and kepub files
         processed_files = []
-        for file in files:
-
+        from calibre.gui2.ui import get_gui
+        gui = get_gui()
+        
+        for file, name in zip(files, names):
             if not file.endswith((".epub", ".kepub")):
                 common.log.debug(f"File {file} is not a supported format for metaguiding, skipping.")
                 processed_files.append(file)
                 continue
 
-            processed_file = metaguide_file(file)
-            processed_files.append(processed_file)
-        # Call the parent method with the processed files
+            gui.status_bar.show_message(f'Metaguiding "{name}"...', 3000)
+            try:
+                processed_file = metaguide_file(file)
+                processed_files.append(processed_file)
+                gui.status_bar.show_message(f'Successfully metaguided "{name}"', 3000)
+            except Exception as e:
+                gui.status_bar.show_message(f'Failed to metaguide "{name}": {str(e)}', 5000)
+                raise
 
+        # Call the parent method with the processed files
         return super().upload_books(
             files=processed_files,
             names=names,
