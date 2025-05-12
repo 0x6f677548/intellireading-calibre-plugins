@@ -102,10 +102,10 @@ class InterfacePlugin(InterfaceAction):
 
     def _show_warning_dialog(self, remove_metaguiding: bool) -> bool:
         """Show a warning dialog to the user before proceeding with metaguiding operations.
-        
+
         Args:
             remove_metaguiding: Whether we're removing metaguiding (True) or adding it (False)
-            
+
         Returns:
             bool: True if the user wants to proceed, False if they want to cancel
         """
@@ -136,6 +136,7 @@ class InterfacePlugin(InterfaceAction):
 
     def _process_single_book(self, current_database, book_id, format_to_find, action_text, remove_metaguiding):
         from calibre.gui2 import error_dialog
+
         """Process a single book for metaguiding operations.
         
         Args:
@@ -158,16 +159,14 @@ class InterfacePlugin(InterfaceAction):
             if not remove_metaguiding and metaguiding.is_file_metaguided(temp_file):
                 common.log.debug(f"File {temp_file} is already metaguided, skipping.")
                 # Show warning dialog about metaguided epub performance on Kobo
-                self.gui.status_bar.show_message(
-                    f'"{book_title}" is already metaguided. Skipping...', 1000
-                )
+                self.gui.status_bar.show_message(f'"{book_title}" is already metaguided. Skipping...', 1000)
                 return True
 
             metaguiding.metaguide_epub_file(temp_file, temp_file, remove_metaguiding=remove_metaguiding)
         except Exception as e:  # pylint: disable=broad-except
             common.log.error("Error processing book id: %d, format: %s" % (book_id, format_to_find))
             common.log.error(e)
-            self.gui.status_bar.show_message(f'{action_text} "{book_title} failed!": {str(e)}', 5000)
+            self.gui.status_bar.show_message(f'{action_text} "{book_title}" failed!: {str(e)}', 5000)
             error_dialog(
                 self.gui,
                 f"Cannot {action_text}. Please verify that the epub is valid.",
@@ -176,7 +175,7 @@ class InterfacePlugin(InterfaceAction):
             )
             return False
 
-        self.gui.status_bar.show_message(f'{action_text} "{book_title} success."', 3000)
+        self.gui.status_bar.show_message(f'{action_text} "{book_title}" success.', 3000)
         current_database.save_original_format(book_id, format_to_find)
         result = current_database.add_format(book_id, format_to_find, temp_file, replace=True, run_hooks=False)
 
@@ -188,7 +187,7 @@ class InterfacePlugin(InterfaceAction):
                 show=True,
             )
             return False
-            
+
         return True
 
     def metaguide_selection_format(self, format_to_find: str, *, remove_metaguiding: bool = False):
@@ -207,16 +206,18 @@ class InterfacePlugin(InterfaceAction):
         selected_rows = self.gui.library_view.selectionModel().selectedRows()
         if not selected_rows or len(selected_rows) == 0:
             return error_dialog(self.gui, f"Cannot {action_text}", "No books selected", show=True)
-        
+
         # Map the rows to book ids
         selected_ids = list(map(self.gui.library_view.model().id, selected_rows))
         current_database = self.gui.current_db.new_api
         epubs_found_count = 0
-        
+
         for book_id in selected_ids:
             if current_database.has_format(book_id, format_to_find):
                 epubs_found_count += 1
-                if not self._process_single_book(current_database, book_id, format_to_find, action_text, remove_metaguiding):
+                if not self._process_single_book(
+                    current_database, book_id, format_to_find, action_text, remove_metaguiding
+                ):
                     return
 
         # If we are here, it means that we have processed all the files
