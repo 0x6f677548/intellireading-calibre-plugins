@@ -9,7 +9,6 @@ from calibre.ebooks.conversion.config import OPTIONS
 from calibre.gui2.convert import Widget
 from calibre.gui2.convert.epub_output import PluginWidget as EPUBPluginWidget
 from calibre.gui2.convert.epub_output_ui import Ui_Form as EPUBUIForm
-from calibre.gui2.preferences.conversion import OutputOptions as BaseOutputOptions
 
 from calibre_plugins.epubmgoutput import common
 

@@ -52,9 +52,7 @@ class MetaguidedEpubOutput(EPUBOutput):
             ),
         ),
     }
-    epubmg_recommendations: Set[Tuple[str, Any, int]] = {
-        ("epub_version", "3", OptionRecommendation.LOW)
-    }
+    epubmg_recommendations: Set[Tuple[str, Any, int]] = {("epub_version", "3", OptionRecommendation.LOW)}
 
     def __init__(self, *args, **kwargs):
         common.log.debug(f"Initalizing {self.name}")
@@ -66,9 +64,7 @@ class MetaguidedEpubOutput(EPUBOutput):
         self.recommendations = self.recommendations.union(self.epubmg_recommendations)
         EPUBOutput.__init__(self, *args, **kwargs)
 
-    def gui_configuration_widget(
-        self, parent, get_option_by_name, get_option_help, db, book_id=None
-    ):
+    def gui_configuration_widget(self, parent, get_option_by_name, get_option_help, db, book_id=None):
         """Set up the plugin configuration widget."""
         _name = self.name.lower().replace(" ", "_")
         common.log.debug(f"Creating GUI configuration widget for {_name}")
@@ -77,9 +73,7 @@ class MetaguidedEpubOutput(EPUBOutput):
 
         return PluginWidget(parent, get_option_by_name, get_option_help, db, book_id)
 
-    def convert(
-        self, oeb_book, output, input_plugin, opts, logger
-    ):  # pylint: disable=unused-argument
+    def convert(self, oeb_book, output, input_plugin, opts, logger):  # pylint: disable=unused-argument
         common.log.debug(
             f"Convert called on {self.name}. \
             Input Plugin: {input_plugin}. Output: {output}"

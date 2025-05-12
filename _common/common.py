@@ -33,11 +33,7 @@ class Logger:
 
     def __init__(self) -> None:
         self.log_level = "INFO"
-        if (
-            "CALIBRE_DEVELOP_FROM" in os.environ
-            or "CALIBRE_DEBUG" in os.environ
-            or "calibre-debug" in sys.argv[0]
-        ):
+        if "CALIBRE_DEVELOP_FROM" in os.environ or "CALIBRE_DEBUG" in os.environ or "calibre-debug" in sys.argv[0]:
             self.log_level = "DEBUG"
 
         # According to Kovid, calibre always uses UTF-8 for the Python 3 version

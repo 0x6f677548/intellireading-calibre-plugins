@@ -54,12 +54,8 @@ class MetaguidedEpubFileType(FileTypePlugin):
         common.log.debug(f"Running {self.name} plugin")
 
         # Check if metaguiding is enabled for this file type
-        file_ext = os.path.splitext(path_to_ebook)[1][
-            1:
-        ].lower()  # Remove dot and convert to lowercase
-        file_type = (
-            "epub" if file_ext == "epub" else "kepub" if file_ext == "kepub" else None
-        )
+        file_ext = os.path.splitext(path_to_ebook)[1][1:].lower()  # Remove dot and convert to lowercase
+        file_type = "epub" if file_ext == "epub" else "kepub" if file_ext == "kepub" else None
 
         if not file_type or file_type not in self.process_filetypes:
             common.log.error(f"Unsupported file type for {path_to_ebook}")
@@ -73,11 +69,7 @@ class MetaguidedEpubFileType(FileTypePlugin):
         # add " (metaguided)" to the output file name
         # TODO: it seems we need to create this file using temporaryfile # pylint: disable=fixme
         # (or something similar) to avoid conflicts
-        _output_path = (
-            os.path.splitext(path_to_ebook)[0]
-            + " (metaguided)"
-            + os.path.splitext(path_to_ebook)[1]
-        )
+        _output_path = os.path.splitext(path_to_ebook)[0] + " (metaguided)" + os.path.splitext(path_to_ebook)[1]
         try:
             metaguiding.metaguide_epub_file(path_to_ebook, _output_path)
         except Exception as e:

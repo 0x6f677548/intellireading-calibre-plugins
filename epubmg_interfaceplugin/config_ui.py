@@ -40,9 +40,7 @@ class ConfigWidget(QWidget):
         self.layout.addWidget(action_group)
 
         # Add info label
-        info_label = QLabel(
-            "Note: This setting affects which action is performed when clicking the toolbar button."
-        )
+        info_label = QLabel("Note: This setting affects which action is performed when clicking the toolbar button.")
         self.layout.addWidget(info_label)
 
         self.layout.addStretch()

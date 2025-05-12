@@ -29,16 +29,12 @@ class ConfigWidget(QWidget):
         event_layout = QVBoxLayout()
 
         # Post-process checkbox
-        self.postprocess_checkbox = QCheckBox(
-            "Enable metaguiding after conversion (post-process)", self
-        )
+        self.postprocess_checkbox = QCheckBox("Enable metaguiding after conversion (post-process)", self)
         self.postprocess_checkbox.setChecked(prefs["enable_on_postprocess"])
         event_layout.addWidget(self.postprocess_checkbox)
 
         # Import checkbox
-        self.import_checkbox = QCheckBox(
-            "Enable metaguiding when importing files", self
-        )
+        self.import_checkbox = QCheckBox("Enable metaguiding when importing files", self)
         self.import_checkbox.setChecked(prefs["enable_on_import"])
         event_layout.addWidget(self.import_checkbox)
 

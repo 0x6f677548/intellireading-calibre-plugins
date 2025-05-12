@@ -7,9 +7,10 @@ import zipfile
 from typing import Generator
 import math
 import regex as re
+
 # relative import is used to ensure that when this module gets copied to another location
 # it still works
-from .__about_cli__ import __version__ as cli_version # noqa: TID252
+from .__about_cli__ import __version__ as cli_version  # noqa: TID252
 
 
 _logger = logging.getLogger(__name__)
@@ -39,19 +40,14 @@ def _generate_flag_file_content() -> bytes:
             # Skip the last frame (current function) and metaguide_epub_stream frame
             relevant_frames = call_frames[:-2]
             call_graph_path = " -> ".join(
-                f"{os.path.basename(frame.filename)}:{frame.name}"
-                for frame in relevant_frames
+                f"{os.path.basename(frame.filename)}:{frame.name}" for frame in relevant_frames
             )
         except Exception as e:
             call_graph_path = "unknown"
             _logger.warning(f"Could not generate call graph: {e}")
 
         # Build and return the flag content
-        flag_lines = [
-            f"version: {cli_version}",
-            f"process: {process_name}",
-            f"call_graph: {call_graph_path}"
-        ]
+        flag_lines = [f"version: {cli_version}", f"process: {process_name}", f"call_graph: {call_graph_path}"]
         return "\n".join(flag_lines).encode()
     except Exception as e:
         # If anything goes wrong, return a minimal flag file rather than failing

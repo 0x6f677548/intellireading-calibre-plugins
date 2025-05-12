@@ -38,9 +38,7 @@ class KoboTouchMetaguider(KOBOTOUCH):
         for file in files:
 
             if not file.endswith((".epub", ".kepub")):
-                common.log.debug(
-                    f"File {file} is not a supported format for metaguiding, skipping."
-                )
+                common.log.debug(f"File {file} is not a supported format for metaguiding, skipping.")
                 processed_files.append(file)
                 continue
 

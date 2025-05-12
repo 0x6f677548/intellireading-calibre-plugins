@@ -91,16 +91,12 @@ class InterfacePlugin(InterfaceAction):
 
         # Add remove metaguiding action to menu
         remove_metaguiding_action = self.menu.addAction(_("Remove metaguiding"))  # type: ignore # noqa
-        remove_metaguiding_action.triggered.connect(
-            self.remove_metaguiding_epub_selection
-        )
+        remove_metaguiding_action.triggered.connect(self.remove_metaguiding_epub_selection)
 
         # point the metaguiding logger to the common logger
         metaguiding._logger = common.log
 
-    def metaguide_selection_format(
-        self, format_to_find: str, *, remove_metaguiding: bool = False
-    ):
+    def metaguide_selection_format(self, format_to_find: str, *, remove_metaguiding: bool = False):
         from calibre.gui2 import (
             error_dialog,
             info_dialog,
@@ -140,9 +136,7 @@ class InterfacePlugin(InterfaceAction):
         # Get currently selected books
         selected_rows = self.gui.library_view.selectionModel().selectedRows()
         if not selected_rows or len(selected_rows) == 0:
-            return error_dialog(
-                self.gui, f"Cannot {action_text}", "No books selected", show=True
-            )
+            return error_dialog(self.gui, f"Cannot {action_text}", "No books selected", show=True)
         # Map the rows to book ids
         selected_ids = list(map(self.gui.library_view.model().id, selected_rows))
         current_database = self.gui.current_db.new_api
@@ -150,42 +144,29 @@ class InterfacePlugin(InterfaceAction):
         for book_id in selected_ids:
             if current_database.has_format(book_id, format_to_find):
                 epubs_found_count += 1
-                temp_file = current_database.format(
-                    book_id, format_to_find, as_path=True
-                )
-                common.log.debug(
-                    "Converting book id: %d, format: %s" % (book_id, format_to_find)
-                )
+                temp_file = current_database.format(book_id, format_to_find, as_path=True)
+                common.log.debug("Converting book id: %d, format: %s" % (book_id, format_to_find))
 
                 try:
-                    metaguiding.metaguide_epub_file(
-                        temp_file, temp_file, remove_metaguiding=remove_metaguiding
-                    )
+                    metaguiding.metaguide_epub_file(temp_file, temp_file, remove_metaguiding=remove_metaguiding)
                 except Exception as e:  # pylint: disable=broad-except
-                    common.log.error(
-                        "Error processing book id: %d, format: %s"
-                        % (book_id, format_to_find)
-                    )
+                    common.log.error("Error processing book id: %d, format: %s" % (book_id, format_to_find))
                     common.log.error(e)
                     return error_dialog(
                         self.gui,
                         f"Cannot {action_text}. Please verify that the epub is valid.",
-                        "Error processing book id: %d, format: %s, error details: %s"
-                        % (book_id, format_to_find, e),
+                        "Error processing book id: %d, format: %s, error details: %s" % (book_id, format_to_find, e),
                         show=True,
                     )
 
                 current_database.save_original_format(book_id, format_to_find)
-                result = current_database.add_format(
-                    book_id, format_to_find, temp_file, replace=True, run_hooks=False
-                )
+                result = current_database.add_format(book_id, format_to_find, temp_file, replace=True, run_hooks=False)
 
                 if not result:
                     return error_dialog(
                         self.gui,
                         f"Failed to {action_text}",
-                        f"Failed to {action_text} format %s to book id %d"
-                        % (format_to_find, book_id),
+                        f"Failed to {action_text} format %s to book id %d" % (format_to_find, book_id),
                         show=True,
                     )
 
@@ -202,8 +183,7 @@ class InterfacePlugin(InterfaceAction):
         info_dialog(
             self.gui,
             "Updated files",
-            "Successfully processed %d files from %d books"
-            % (epubs_found_count, len(selected_ids)),
+            "Successfully processed %d files from %d books" % (epubs_found_count, len(selected_ids)),
             show=True,
         )
         current_idx = self.gui.library_view.currentIndex()
