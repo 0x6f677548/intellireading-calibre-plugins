@@ -26,7 +26,7 @@ class MetaguidedEpubFileType(FileTypePlugin):
     author = "Hugo Batista"
     version = (2, 0, 0)
     file_types = set(["epub", "kepub"])
-    minimum_calibre_version = (6, 5, 0)
+    minimum_calibre_version = (8, 4, 0)
 
     def __init__(self, *args, **kwargs):
         common.log.debug(f"Initializing {self.name} plugin")

@@ -35,7 +35,7 @@ class MetaguidedEpubOutput(EPUBOutput):
     author = "Hugo Batista"
     version = (2, 0, 0)
     file_type = "epub"
-    minimum_calibre_version = (6, 5, 0)
+    minimum_calibre_version = (8, 4, 0)
     on_postprocess = True
     # Run this plugin after conversion is complete
     on_import = False  # Run this plugin on import

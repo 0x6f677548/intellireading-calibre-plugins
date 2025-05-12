@@ -30,7 +30,7 @@ class KoboTouchMetaguider(KOBOTOUCH):
     )
     supported_platforms = ["windows", "osx", "linux"]
     version = (2, 0, 0)
-    minimum_calibre_version = (6, 5, 0)
+    minimum_calibre_version = (8, 4, 0)
     author = "Hugo Batista"
 
     def upload_books(self, files, names, on_card, end_session=True, metadata=None):
