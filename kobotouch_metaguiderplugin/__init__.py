@@ -27,7 +27,7 @@ class KoboTouchMetaguider(KOBOTOUCH):
         "This is done to improve your focus and reading speed (sometimes called bionic reading)."
     )
     supported_platforms = ["windows", "osx", "linux"]
-    version = (2, 1, 0)
+    version = (2, 0, 0)
     minimum_calibre_version = (6, 5, 0)
     author = "Hugo Batista"
 
