@@ -14,6 +14,7 @@ from calibre.gui2 import question_dialog
 from calibre.gui2.actions import (
     InterfaceAction,
 )
+
 from calibre_plugins.epubmginterface import (
     common,
     metaguiding,
@@ -25,13 +26,6 @@ class InterfacePlugin(InterfaceAction):
     """Interface plugin for metaguiding epubs"""
 
     name = "Intellireading Interface Plugin"
-
-    # Declare the main action associated with this plugin
-    # The keyboard shortcut can be None if you dont want to use a keyboard
-    # shortcut. Remember that currently calibre has no central management for
-    # keyboard shortcuts, so try to use an unusual/unused shortcut.
-    # action_spec = ('Intellireading Interface Plugin', None,
-    #        'Run the Intellireading Interface Plugin', 'Shift+M')
 
     # Create our top-level menu/toolbar action (text, icon_path, tooltip, keyboard shortcut)
     action_spec = (
@@ -49,20 +43,9 @@ class InterfacePlugin(InterfaceAction):
         # This method is called once per plugin, do initial setup here
 
         # Set the icon for this interface action
-        # The get_icons function is a builtin function defined for all your
-        # plugin code. It loads icons from the plugin zip file. It returns
-        # QIcon objects, if you want the actual data, use the analogous
-        # get_resources builtin function.
-        #
-        # Note that if you are loading more than one icon, for performance, you
-        # should pass a list of names to get_icons. In this case, get_icons
-        # will return a dictionary mapping names to QIcons. Names that
-        # are not found in the zip file will result in null QIcons.
         _icon = get_icons("images/icon.png", "Metaguide")  # type: ignore # noqa
 
-        # The qaction is automatically created from the action_spec defined
-        # above
-        # self.is_library_selected = True
+        # The qaction is automatically created from the action_spec defined above
         self.qaction.setIcon(_icon)
 
         # Create the menu
@@ -70,37 +53,58 @@ class InterfacePlugin(InterfaceAction):
         if self.menu is None:
             self.menu = QMenu()
             self.qaction.setMenu(self.menu)
-
+            
         # Add default action based on configuration
         self.qaction.triggered.connect(
             self.metaguide_kepub_selection
             if config.prefs["default_action"] == "kepub"
             else self.metaguide_epub_selection
         )
-
+        
         # Add epub action to menu
         epub_action = self.menu.addAction(_("Metaguide epub"))  # type: ignore # noqa
         epub_action.triggered.connect(self.metaguide_epub_selection)
-
+        
         # Add kepub action to menu
         kepub_action = self.menu.addAction(_("Metaguide kepub"))  # type: ignore # noqa
         kepub_action.triggered.connect(self.metaguide_kepub_selection)
-
+        
         # Add separator
         self.menu.addSeparator()
-
+        
         # Add remove metaguiding action to menu
         remove_metaguiding_action = self.menu.addAction(_("Remove metaguiding"))  # type: ignore # noqa
         remove_metaguiding_action.triggered.connect(self.remove_metaguiding_epub_selection)
-
+        
         # point the metaguiding logger to the common logger
         metaguiding._logger = common.log
 
+    def _show_kobotouch_message_if_enabled(self):
+        """Show a message about KoboTouch Metaguider plugin if enabled."""
+        if config.prefs["show_kobotouch_message"]:
+            common.log.info("Showing KoboTouch Metaguider availability message")
+            msg = _(  # type: ignore # noqa
+                "If you use a Kobo device, you can now use the 'KoboTouch Metaguider' device driver "
+                "to automatically convert books to metaguided format when sending them to your device.\n\n"
+                "To use it, download it from the calibre plugin store and install it.\n\n"
+                "Click 'Yes' to show this message next time, 'No' to never show it again."
+            )
+            show_message = question_dialog(
+                self.gui,
+                _("KoboTouch Metaguider Available"),  # type: ignore # noqa
+                msg,
+                show_copy_button=True,
+                default_yes=False,  # False makes "Don't show again" the default
+                yes_text=_("Show again"),  # type: ignore # noqa
+                no_text=_("Don't show again")  # type: ignore # noqa
+            )
+            config.prefs["show_kobotouch_message"] = show_message
+
     def metaguide_selection_format(self, format_to_find: str, *, remove_metaguiding: bool = False):
-        from calibre.gui2 import (
-            error_dialog,
-            info_dialog,
-        )
+        from calibre.gui2 import error_dialog
+
+        # Show KoboTouch message if enabled
+        self._show_kobotouch_message_if_enabled()
 
         # warn the user that remove_metaguiding is an EXPERIMENTAL feature and
         # that it may not work as expected.
@@ -180,11 +184,13 @@ class InterfacePlugin(InterfaceAction):
                 show=True,
             )
 
-        info_dialog(
+        question_dialog(
             self.gui,
             "Updated files",
             "Successfully processed %d files from %d books" % (epubs_found_count, len(selected_ids)),
-            show=True,
+            show_copy_button=False,
+            yes_text=_("OK"),  # type: ignore # noqa
+            no_text=None
         )
         current_idx = self.gui.library_view.currentIndex()
         self.gui.library_view.model().current_changed(current_idx, current_idx)
