@@ -38,19 +38,41 @@ class KoboTouchMetaguider(KOBOTOUCH):
         # only process epub and kepub files
         processed_files = []
         from calibre.gui2.ui import get_gui
+
         gui = get_gui()
-        
+
         for file, name in zip(files, names):
             if not file.endswith((".epub", ".kepub")):
                 common.log.debug(f"File {file} is not a supported format for metaguiding, skipping.")
                 processed_files.append(file)
                 continue
 
-            gui.status_bar.show_message(f'Metaguiding "{name}"...', 3000)
+            gui.status_bar.show_message(f'Metaguiding "{name}"...', 500)
             try:
+
+                common.log.debug(f"Processing file: {file}")
+                common.log.debug(f"Is file already metaguided? {metaguiding.is_file_metaguided(file)}")
+
+                # check if the file has already been metaguided
+                if file.endswith(".epub") and metaguiding.is_file_metaguided(file):
+                    common.log.debug(f"File {file} is already metaguided, skipping.")
+                    # Show warning dialog about metaguided epub performance on Kobo
+                    gui.status_bar.show_message(
+                        f'"{name}" is already metaguided. '
+                        "Sending pre-metaguided EPUBs to a Kobo device may cause slow performance "
+                        "due to the kepubify process and how it handles spans.\n\n"
+                        "Recommended Process:\n"
+                        "1. Send the original non-metaguided EPUB to your Kobo\n"
+                        "2. Let this driver handle the metaguiding during transfer\n\n"
+                        "This ensures optimal performance on your device.",
+                        10000,
+                    )
+                    processed_files.append(file)
+                    continue
+
                 processed_file = metaguide_file(file)
                 processed_files.append(processed_file)
-                gui.status_bar.show_message(f'Successfully metaguided "{name}"', 3000)
+                gui.status_bar.show_message(f'Successfully metaguided "{name}"', 1000)
             except Exception as e:
                 gui.status_bar.show_message(f'Failed to metaguide "{name}": {str(e)}', 5000)
                 raise
