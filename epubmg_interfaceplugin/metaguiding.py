@@ -356,7 +356,7 @@ def metaguide_epub_stream(input_stream: BytesIO, *, remove_metaguiding: bool = F
             epub_item_files = _get_epub_item_files_from_zip(input_zip)
 
             # Check if the file is already metaguided
-            is_already_metaguided, _ = _check_flag_file(epub_item_files, remove_metaguiding)
+            is_already_metaguided, _ = _check_flag_file(epub_item_files, remove_metaguiding=remove_metaguiding)
 
             if is_already_metaguided:
                 _logger.debug("Copying files while preserving structure...")
