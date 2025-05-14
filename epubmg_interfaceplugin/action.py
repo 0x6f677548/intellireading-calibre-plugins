@@ -80,7 +80,7 @@ class InterfacePlugin(InterfaceAction):
         metaguiding._logger = common.log
 
     def _show_kobotouch_message_if_enabled(self):
-        """Show a message about KoboTouch Metaguider plugin if enabled."""
+        """Show a message about KoboTouch Metaguider plugin."""
         if config.prefs["show_kobotouch_message"]:
             common.log.info("Showing KoboTouch Metaguider availability message")
             msg = _(  # type: ignore # noqa
@@ -118,7 +118,7 @@ class InterfacePlugin(InterfaceAction):
                 "to remove the metaguiding. Some original format may not be restored. "
                 "Please make sure to backup your library before using this feature.\n\n"
                 "Do you want to continue?",
-                show_copy_button=True,
+                show_copy_button=False,
                 default_yes=False,
             )
         else:
@@ -130,11 +130,11 @@ class InterfacePlugin(InterfaceAction):
                 "Any previous ORIGINAL_format file will be overwritten and lost. "
                 "Please make sure to backup your library before using this feature.\n\n"
                 "Do you want to continue?",
-                show_copy_button=True,
+                show_copy_button=False,
                 default_yes=False,
             )
 
-    def _process_single_book(self, current_database, book_id, format_to_find, action_text, remove_metaguiding):
+    def _process_single_book(self, current_database, book_id, format_to_find, remove_metaguiding):
         from calibre.gui2 import error_dialog
 
         """Process a single book for metaguiding operations.
@@ -143,7 +143,6 @@ class InterfacePlugin(InterfaceAction):
             current_database: The current calibre database
             book_id: The ID of the book to process
             format_to_find: The format to look for (epub/kepub)
-            action_text: Text describing the action being performed
             remove_metaguiding: Whether to remove metaguiding
             
         Returns:
@@ -153,37 +152,46 @@ class InterfacePlugin(InterfaceAction):
         book_title = current_database.field_for("title", book_id)
         common.log.debug("Converting book id: %d, format: %s" % (book_id, format_to_find))
 
-        self.gui.status_bar.show_message(f'{action_text.title()} "{book_title}"...', 500)
+        self.gui.status_bar.show_message(f"Processing '{book_title}'...", 500)
         try:
 
             if not remove_metaguiding and metaguiding.is_file_metaguided(temp_file):
-                common.log.debug(f"File {temp_file} is already metaguided, skipping.")
-                # Show warning dialog about metaguided epub performance on Kobo
-                self.gui.status_bar.show_message(f'"{book_title}" is already metaguided. Skipping...', 1000)
+                log_message = (
+                    f"Book '{book_title}' is already metaguided, skipping... (Format: {format_to_find})"
+                )
+                common.log.debug(log_message)
+                self.gui.status_bar.show_message(log_message, 1000)
                 return True
 
             metaguiding.metaguide_epub_file(temp_file, temp_file, remove_metaguiding=remove_metaguiding)
         except Exception as e:  # pylint: disable=broad-except
-            common.log.error("Error processing book id: %d, format: %s" % (book_id, format_to_find))
-            common.log.error(e)
-            self.gui.status_bar.show_message(f'{action_text} "{book_title}" failed!: {str(e)}', 5000)
+            log_message = (
+                f"Error processing book '{book_title}', format: {format_to_find}, error details: {e}"
+            )
+            common.log.error(log_message)
+            self.gui.status_bar.show_message(log_message, 5000)
             error_dialog(
                 self.gui,
-                f"Cannot {action_text}. Please verify that the epub is valid.",
-                "Error processing book id: %d, format: %s, error details: %s" % (book_id, format_to_find, e),
-                show=True,
+                f"Error processing book '{book_title}'. Please verify that the epub is valid.",
+                "This error may be caused by a corrupted file or an unsupported format.\n\n"
+                "Please check the file and try again.\n\n"
+                "If the problem persists, please report it to the plugin author.\n\n"
+                f"Error details: {str(e)}\n\n",
+                show=True
             )
             return False
 
-        self.gui.status_bar.show_message(f'{action_text} "{book_title}" success.', 3000)
+        self.gui.status_bar.show_message(f"'Operation completed on book '{book_title}'", 3000)
         current_database.save_original_format(book_id, format_to_find)
         result = current_database.add_format(book_id, format_to_find, temp_file, replace=True, run_hooks=False)
 
         if not result:
             error_dialog(
                 self.gui,
-                f"Failed to {action_text}",
-                f"Failed to {action_text} format %s to book id %d" % (format_to_find, book_id),
+                "Operation failed",
+                f"Processing book '{book_title}' failed. (no result)\n\n"
+                "Please verify that the file is valid and try again.\n\n"
+                "If the problem persists, please report it to the plugin author.\n\n",
                 show=True,
             )
             return False
@@ -200,12 +208,10 @@ class InterfacePlugin(InterfaceAction):
         if not self._show_warning_dialog(remove_metaguiding):
             return
 
-        action_text = "remove metaguiding" if remove_metaguiding else "add metaguiding"
-
         # Get currently selected books
         selected_rows = self.gui.library_view.selectionModel().selectedRows()
         if not selected_rows or len(selected_rows) == 0:
-            return error_dialog(self.gui, f"Cannot {action_text}", "No books selected", show=True)
+            return error_dialog(self.gui, "Cannot process books", "No books selected", show=True)
 
         # Map the rows to book ids
         selected_ids = list(map(self.gui.library_view.model().id, selected_rows))
@@ -216,7 +222,7 @@ class InterfacePlugin(InterfaceAction):
             if current_database.has_format(book_id, format_to_find):
                 epubs_found_count += 1
                 if not self._process_single_book(
-                    current_database, book_id, format_to_find, action_text, remove_metaguiding
+                    current_database, book_id, format_to_find, remove_metaguiding
                 ):
                     return
 
@@ -225,14 +231,18 @@ class InterfacePlugin(InterfaceAction):
         if epubs_found_count == 0:
             return error_dialog(
                 self.gui,
-                f"Cannot {action_text}",
+                "Cannot process books",
                 "No books with format %s found" % (format_to_find),
+                show_copy_button=False,
                 show=True,
             )
 
+        self.gui.status_bar.show_message(
+            f"Successfully processed {epubs_found_count} files from {len(selected_ids)} books", 3000
+        )
         question_dialog(
             self.gui,
-            f"{action_text} completed",
+            "Operation completed",
             "Successfully processed %d files from %d books" % (epubs_found_count, len(selected_ids)),
             show_copy_button=False,
             yes_text=_("OK"),  # type: ignore # noqa
