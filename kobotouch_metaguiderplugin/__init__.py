@@ -51,22 +51,25 @@ class KoboTouchMetaguider(KOBOTOUCH):
             try:
 
                 common.log.debug(f"Processing file: {file}")
-                common.log.debug(f"Is file already metaguided? {metaguiding.is_file_metaguided(file)}")
+                is_file_metaguided = metaguiding.is_file_metaguided(file)
+                common.log.debug(f"File {file} is already metaguided: {is_file_metaguided}")
 
-                # check if the file has already been metaguided
-                if file.endswith(".epub") and metaguiding.is_file_metaguided(file):
+                # check if the file has already been metaguided. 
+                if is_file_metaguided:
                     common.log.debug(f"File {file} is already metaguided, skipping.")
-                    # Show warning dialog about metaguided epub performance on Kobo
-                    gui.status_bar.show_message(
-                        f'"{name}" is already metaguided. '
-                        "Sending pre-metaguided EPUBs to a Kobo device may cause slow performance "
-                        "due to the kepubify process and how it handles spans.\n\n"
-                        "Recommended Process:\n"
-                        "1. Send the original non-metaguided EPUB to your Kobo\n"
-                        "2. Let this driver handle the metaguiding during transfer\n\n"
-                        "This ensures optimal performance on your device.",
-                        10000,
-                    )
+                   
+                    if file.endswith(".epub"):
+                        # Show warning dialog about metaguided epub performance on Kobo
+                        gui.status_bar.show_message(
+                            f'"{name}" is already metaguided. '
+                            "Sending pre-metaguided EPUBs to a Kobo device may cause slow performance "
+                            "due to the kepubify process and how it handles spans.\n\n"
+                            "Recommended Process:\n"
+                            "1. Send the original non-metaguided EPUB to your Kobo\n"
+                            "2. Let this driver handle the metaguiding during transfer\n\n"
+                            "This ensures optimal performance on your device.",
+                            10000,
+                        )
                     processed_files.append(file)
                     continue
 
