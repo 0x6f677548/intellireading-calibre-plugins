@@ -240,14 +240,6 @@ class InterfacePlugin(InterfaceAction):
         self.gui.status_bar.show_message(
             f"Successfully processed {epubs_found_count} files from {len(selected_ids)} books", 3000
         )
-        question_dialog(
-            self.gui,
-            "Operation completed",
-            "Successfully processed %d files from %d books" % (epubs_found_count, len(selected_ids)),
-            show_copy_button=False,
-            yes_text=_("OK"),  # type: ignore # noqa
-            no_text=None,
-        )
         current_idx = self.gui.library_view.currentIndex()
         self.gui.library_view.model().current_changed(current_idx, current_idx)
         self.gui.library_view.model().refresh_ids(selected_ids)
