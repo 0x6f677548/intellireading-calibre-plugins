@@ -9,9 +9,9 @@ from calibre.ebooks.conversion.config import OPTIONS
 from calibre.gui2.convert import Widget
 from calibre.gui2.convert.epub_output import PluginWidget as EPUBPluginWidget
 from calibre.gui2.convert.epub_output_ui import Ui_Form as EPUBUIForm
+from calibre.gui2.preferences.conversion import OutputOptions as BaseOutputOptions
 
 from calibre_plugins.epubmgoutput import common
-
 
 class PluginWidget(EPUBPluginWidget, EPUBUIForm):
     """The plugin configuration widget for a epubmg output plugin."""
@@ -48,3 +48,54 @@ class PluginWidget(EPUBPluginWidget, EPUBUIForm):
         # pylint:disable=attribute-defined-outside-init
         common.log.debug("Setting up epubmg output plugin widget")
         super(PluginWidget, self).setupUi(Form)
+
+        from PyQt5 import QtWidgets  # pylint: disable=import-error # type: ignore
+        from PyQt5 import QtCore  # pylint: disable=import-error # type: ignore
+
+        _rows = self.gridLayout.rowCount() - 1
+
+        spacer = self.gridLayout.itemAtPosition(_rows, 0)
+        self.gridLayout.removeItem(spacer)
+
+        self.opt_additional_conversion_options = QtWidgets.QLabel(
+            _("Additional Conversion options") + ":"  # type: ignore # noqa
+        )
+        self.gridLayout.addWidget(
+            self.opt_additional_conversion_options, _rows, 0, 1, 1
+        )
+
+        # epubmg_enable_metaguiding
+        self.opt_epubmg_enable_metaguiding = QtWidgets.QCheckBox(Form)
+        self.opt_epubmg_enable_metaguiding.setObjectName(
+            "opt_epubmg_enable_metaguiding"
+        )
+        self.opt_epubmg_enable_metaguiding.setText(
+            _("Enable metaguiding")  # type: ignore # noqa
+        )
+        self.gridLayout.addWidget(self.opt_epubmg_enable_metaguiding, _rows, 1, 1, 1)
+
+        _rows += 1
+
+        self.gridLayout.addItem(spacer, _rows, 0, 1, 1)
+
+        # Copy from calibre.gui2.convert.epub_output_ui.Ui_Form to make the
+        # new additions work
+        QtCore.QMetaObject.connectSlotsByName(Form)
+
+
+class OutputOptions(BaseOutputOptions):
+    """This allows adding our options to the output process."""
+
+    def __init__(self, *args, **kwargs):
+        """Initialize the output options."""
+        print("epubmg: OutputOptions.__init__")
+        super(OutputOptions, self).__init__(*args, **kwargs)
+
+    def load_conversion_widgets(self):
+        """Add our configuration to the output process."""
+        # pylint:disable=access-member-before-definition
+        # pylint:disable=attribute-defined-outside-init
+        print("epubmg: OutputOptions.load_conversion_widgets")
+        super(OutputOptions, self).load_conversion_widgets()
+        self.conversion_widgets.append(PluginWidget)
+        self.conversion_widgets = sorted(self.conversion_widgets, key=lambda x: x.TITLE)
