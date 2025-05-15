@@ -156,18 +156,14 @@ class InterfacePlugin(InterfaceAction):
         try:
 
             if not remove_metaguiding and metaguiding.is_file_metaguided(temp_file):
-                log_message = (
-                    f"Book '{book_title}' is already metaguided, skipping... (Format: {format_to_find})"
-                )
+                log_message = f"Book '{book_title}' is already metaguided, skipping... (Format: {format_to_find})"
                 common.log.debug(log_message)
                 self.gui.status_bar.show_message(log_message, 1000)
                 return True
 
             metaguiding.metaguide_epub_file(temp_file, temp_file, remove_metaguiding=remove_metaguiding)
         except Exception as e:  # pylint: disable=broad-except
-            log_message = (
-                f"Error processing book '{book_title}', format: {format_to_find}, error details: {e}"
-            )
+            log_message = f"Error processing book '{book_title}', format: {format_to_find}, error details: {e}"
             common.log.error(log_message)
             self.gui.status_bar.show_message(log_message, 5000)
             error_dialog(
@@ -177,7 +173,7 @@ class InterfacePlugin(InterfaceAction):
                 "Please check the file and try again.\n\n"
                 "If the problem persists, please report it to the plugin author.\n\n"
                 f"Error details: {str(e)}\n\n",
-                show=True
+                show=True,
             )
             return False
 
@@ -221,9 +217,7 @@ class InterfacePlugin(InterfaceAction):
         for book_id in selected_ids:
             if current_database.has_format(book_id, format_to_find):
                 epubs_found_count += 1
-                if not self._process_single_book(
-                    current_database, book_id, format_to_find, remove_metaguiding
-                ):
+                if not self._process_single_book(current_database, book_id, format_to_find, remove_metaguiding):
                     return
 
         # If we are here, it means that we have processed all the files

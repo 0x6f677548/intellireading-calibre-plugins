@@ -13,6 +13,7 @@ from calibre.gui2.preferences.conversion import OutputOptions as BaseOutputOptio
 
 from calibre_plugins.epubmgoutput import common
 
+
 class PluginWidget(EPUBPluginWidget, EPUBUIForm):
     """The plugin configuration widget for a epubmg output plugin."""
 
@@ -60,18 +61,12 @@ class PluginWidget(EPUBPluginWidget, EPUBUIForm):
         self.opt_additional_conversion_options = QtWidgets.QLabel(
             _("Additional Conversion options") + ":"  # type: ignore # noqa
         )
-        self.gridLayout.addWidget(
-            self.opt_additional_conversion_options, _rows, 0, 1, 1
-        )
+        self.gridLayout.addWidget(self.opt_additional_conversion_options, _rows, 0, 1, 1)
 
         # epubmg_enable_metaguiding
         self.opt_epubmg_enable_metaguiding = QtWidgets.QCheckBox(Form)
-        self.opt_epubmg_enable_metaguiding.setObjectName(
-            "opt_epubmg_enable_metaguiding"
-        )
-        self.opt_epubmg_enable_metaguiding.setText(
-            _("Enable metaguiding")  # type: ignore # noqa
-        )
+        self.opt_epubmg_enable_metaguiding.setObjectName("opt_epubmg_enable_metaguiding")
+        self.opt_epubmg_enable_metaguiding.setText(_("Enable metaguiding"))  # type: ignore # noqa
         self.gridLayout.addWidget(self.opt_epubmg_enable_metaguiding, _rows, 1, 1, 1)
 
         _rows += 1
