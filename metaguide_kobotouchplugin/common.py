@@ -25,7 +25,7 @@ from polyglot.io import PolyglotStringIO
 if is_py3:
     from typing import List
 
-GUI_PLUGIN_NAME = "Epub Metaguider GUI (intellireading.com)"
+GUI_PLUGIN_NAME = "Metaguide - interface (intellireading.com)"
 
 
 class Logger:

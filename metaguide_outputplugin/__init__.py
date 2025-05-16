@@ -22,7 +22,7 @@ __docformat__ = "markdown en"
 class MetaguidedEpubOutput(EPUBOutput):
     """Allows calibre to convert any known source format to a metaguided epub file."""
 
-    name = "Metaguide - Epub output format (intellireading.com)"
+    name = "Metaguide - Epub Output Format (intellireading.com)"
     description = (
         "Adds additional options to Epub Output conversion, enabling epub files conversion to a metaguided format, improving your focus and reading speed (sometimes called bionic reading)."
         " This plugin is for ADVANCED users only. It is not recommended for beginners. If you are new to metaguiding, please use the '"

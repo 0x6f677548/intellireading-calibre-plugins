@@ -10,38 +10,42 @@ from typing import List, Dict, Optional
 # Type definitions
 PluginConfig = Dict[str, str | Path]
 
+
 def get_plugin_name_from_init(plugin_path: Path) -> Optional[str]:
     """Extract the plugin name from the first class's name attribute in __init__.py.
-    
+
     Args:
         plugin_path: Path to the plugin directory containing __init__.py
-        
+
     Returns:
         The plugin name if found, None otherwise
     """
     init_path = plugin_path / "__init__.py"
     if not init_path.exists():
         return None
-        
+
     try:
-        with open(init_path, 'r', encoding='utf-8') as f:
+        with open(init_path, "r", encoding="utf-8") as f:
             tree = ast.parse(f.read())
-            
+
         # Look for the first class definition
         for node in ast.walk(tree):
             if isinstance(node, ast.ClassDef):
                 # Look for a name attribute assignment in the class
                 for child in node.body:
-                    if (isinstance(child, ast.Assign) and 
-                        len(child.targets) == 1 and 
-                        isinstance(child.targets[0], ast.Name) and 
-                        child.targets[0].id == 'name' and 
-                        isinstance(child.value, ast.Constant)):
+                    if (
+                        isinstance(child, ast.Assign)
+                        and len(child.targets) == 1
+                        and isinstance(child.targets[0], ast.Name)
+                        and child.targets[0].id == "name"
+                        and isinstance(child.value, ast.Constant)
+                    ):
                         return child.value.value
         return None
     except Exception as e:
         print(f"Warning: Could not read plugin name from {init_path}: {e}")
         return None
+
 
 # File system paths
 DEFAULT_CALIBRE_DIR = Path("/opt/calibre")
@@ -53,10 +57,7 @@ CALIBRE_DEBUG = "calibre-debug"
 
 # Plugin configurations
 PLUGIN_INFO: List[PluginConfig] = [
-    {
-        "name": name or f"Unknown plugin at {path}",
-        "path": path
-    }
+    {"name": name or f"Unknown plugin at {path}", "path": path}
     for path, name in [
         (Path(p), get_plugin_name_from_init(Path(p)))
         for p in [

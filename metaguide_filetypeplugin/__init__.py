@@ -14,7 +14,7 @@ __docformat__ = "markdown en"
 
 class MetaguidedEpubFileType(FileTypePlugin):
 
-    name = "Metaguide - post processor (intellireading.com)"
+    name = "Metaguide - Post Processor (intellireading.com)"
     description = (
         "Works on post conversion/import and converts epub/kepub files to a metaguided format, improving your focus and reading speed (sometimes called bionic reading)."
         " This plugin is for ADVANCED users only. It is not recommended for beginners. If you are new to metaguiding, please use the '"
