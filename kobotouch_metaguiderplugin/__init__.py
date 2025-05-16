@@ -7,7 +7,7 @@ from calibre_plugins.kobotouchmetaguider import common, metaguiding, __about_cli
 MSG_ALREADY_METAGUIDED = (
     '"{name}" is already metaguided. '
     "Sending pre-metaguided EPUBs to a Kobo device may cause slow performance "
-    "due to the kepubify process and how it handles spans.\n\n"
+    "due to the kepubify process and the way it handles the bold tag.\n\n"
     "Recommended Process:\n"
     "1. Send the original non-metaguided EPUB to your Kobo\n"
     "2. Let this driver handle the metaguiding during transfer\n\n"
@@ -43,7 +43,6 @@ class KoboTouchMetaguider(KOBOTOUCH):
     author = "Hugo Batista"
 
     def initialize(self) -> None:
-        """Initialize the plugin after instantiation."""
         common.log.debug("Initializing KoboTouchMetaguider")
         super().initialize()
 
@@ -153,6 +152,8 @@ class KoboTouchMetaguider(KOBOTOUCH):
                 if file.lower().endswith(".epub"):
                     if not is_file_metaguided:
                         # Always convert EPUBs to KEPUBs before metaguiding for optimal performance
+                        # this will avoid additional spans for each bold tag
+                        # as reported at https://go.hugobatista.com/gh/intellireading-calibre-plugins/issues/13
                         with PersistentTemporaryFile(suffix=".kepub") as temp_file:
                             temp_file.close()  # Close it so other processes can access it
                             try:
@@ -160,9 +161,7 @@ class KoboTouchMetaguider(KOBOTOUCH):
                                 self._log_and_show_message(f'Converted "{name}" to KEPUB...', 1000)
                                 name = name.replace(".epub", ".kepub")
                                 # Metaguide the converted file
-                                processed_file = metaguide_file(converted_file)
-                                processed_files.append(processed_file)
-                                processed_names.append(name)
+                                file = metaguide_file(converted_file)
                                 self._log_and_show_message(f'Successfully metaguided "{name}"', 1000)
                             except Exception as e:
                                 common.log.error(f"Error converting {file} to kepub: {e}")
@@ -173,18 +172,15 @@ class KoboTouchMetaguider(KOBOTOUCH):
                             MSG_ALREADY_METAGUIDED.format(name=name),
                             10000,
                         )
-                        processed_files.append(file)
-                        processed_names.append(name)
                 else:
                     # Handle kepub files
                     if not is_file_metaguided:
-                        processed_file = metaguide_file(file)
-                        processed_files.append(processed_file)
-                        processed_names.append(name)
+                        file = metaguide_file(file)
                         self._log_and_show_message(f'Successfully metaguided "{name}"', 1000)
-                    else:
-                        processed_files.append(file)
-                        processed_names.append(name)
+
+                # Add the processed file and name to the lists
+                processed_files.append(file)
+                processed_names.append(name)
 
             except Exception as e:
                 self._log_and_show_message(f'Failed to metaguide "{name}": {str(e)}', 5000)
