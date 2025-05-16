@@ -7,7 +7,7 @@ from calibre.customize import (
     InterfaceActionBase,
 )
 
-from calibre_plugins.epubmginterface import __about_cli__
+from calibre_plugins.metaguideinterface import __about_cli__
 
 
 class InterfacePluginWrapper(InterfaceActionBase):
@@ -18,11 +18,11 @@ class InterfacePluginWrapper(InterfaceActionBase):
         and is called immediately after the user clicks OK. Changes are applied
         if and only if the method returns True.
         """
-        from calibre_plugins.epubmginterface.config_ui import ConfigWidget
+        from calibre_plugins.metaguideinterface.config_ui import ConfigWidget
 
         return ConfigWidget(None)
 
-    name = "Epub Metaguider GUI (intellireading.com)"
+    name = "Metaguide - interface (intellireading.com)"
     description = (
         "Adds a button to toolbar and context menu, to convert epub and kepub files "
         "to a metaguided format, improving your focus and reading speed "
@@ -37,7 +37,7 @@ class InterfacePluginWrapper(InterfaceActionBase):
     #: This field defines the GUI plugin class that contains all the code
     #: that actually does something. Its format is module_path:class_name
     #: The specified class must be defined in the specified module.
-    actual_plugin = "calibre_plugins.epubmginterface.action:InterfacePlugin"
+    actual_plugin = "calibre_plugins.metaguideinterface.action:InterfacePlugin"
 
     def is_customizable(self):
         return True

@@ -8,7 +8,7 @@ from typing import Tuple
 from calibre.ebooks.conversion.plugins.epub_output import EPUBOutput
 from calibre.customize.conversion import OptionRecommendation
 
-from calibre_plugins.epubmgoutput import (  # pylint: disable=import-error # type: ignore
+from calibre_plugins.metaguideoutput import (  # pylint: disable=import-error # type: ignore
     common,
     metaguiding,
     __about_cli__,
@@ -22,7 +22,7 @@ __docformat__ = "markdown en"
 class MetaguidedEpubOutput(EPUBOutput):
     """Allows calibre to convert any known source format to a metaguided epub file."""
 
-    name = "Epub Metaguider output format (intellireading.com)"
+    name = "Metaguide - Epub output format (intellireading.com)"
     description = (
         "Adds additional options to Epub Output conversion, enabling epub files conversion to a metaguided format, improving your focus and reading speed (sometimes called bionic reading)."
         " This plugin is for ADVANCED users only. It is not recommended for beginners. If you are new to metaguiding, please use the '"
@@ -72,7 +72,7 @@ class MetaguidedEpubOutput(EPUBOutput):
         _name = self.name.lower().replace(" ", "_")
         common.log.debug(f"Creating GUI configuration widget for {_name}")
 
-        from calibre_plugins.epubmgoutput.config_ui import PluginWidget
+        from calibre_plugins.metaguideoutput.config_ui import PluginWidget
 
         return PluginWidget(parent, get_option_by_name, get_option_help, db, book_id)
 

@@ -12,7 +12,7 @@ try:
 except ImportError:
     from PyQt5.Qt import QWidget, QVBoxLayout, QCheckBox, QGroupBox, QLabel
 
-from calibre_plugins.epubmgfiletype.config import prefs
+from calibre_plugins.metaguidefiletype.config import prefs
 
 
 class ConfigWidget(QWidget):

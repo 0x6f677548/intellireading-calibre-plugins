@@ -15,7 +15,7 @@ from calibre.gui2.actions import (
     InterfaceAction,
 )
 
-from calibre_plugins.epubmginterface import (
+from calibre_plugins.metaguideinterface import (
     common,
     metaguiding,
     config,

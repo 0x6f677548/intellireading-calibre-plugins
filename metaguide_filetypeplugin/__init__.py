@@ -2,7 +2,7 @@ import os
 
 # pylint: disable=import-error
 
-from calibre_plugins.epubmgfiletype import common, metaguiding, __about_cli__
+from calibre_plugins.metaguidefiletype import common, metaguiding, __about_cli__
 from calibre.customize import (
     FileTypePlugin,
 )
@@ -14,9 +14,9 @@ __docformat__ = "markdown en"
 
 class MetaguidedEpubFileType(FileTypePlugin):
 
-    name = "Epub Metaguider post processor (intellireading.com)"
+    name = "Metaguide - post processor (intellireading.com)"
     description = (
-        "Works on post conversion/import and converts epub files to a metaguided format, improving your focus and reading speed (sometimes called bionic reading)."
+        "Works on post conversion/import and converts epub/kepub files to a metaguided format, improving your focus and reading speed (sometimes called bionic reading)."
         " This plugin is for ADVANCED users only. It is not recommended for beginners. If you are new to metaguiding, please use the '"
         + common.GUI_PLUGIN_NAME
         + "' plugin instead."
@@ -34,7 +34,7 @@ class MetaguidedEpubFileType(FileTypePlugin):
         metaguiding._logger = common.log
 
         # Load plugin settings
-        from calibre_plugins.epubmgfiletype.config import prefs
+        from calibre_plugins.metaguidefiletype.config import prefs
 
         # Event settings control when the plugin runs
         self.on_postprocess = prefs["enable_on_postprocess"]
@@ -81,7 +81,7 @@ class MetaguidedEpubFileType(FileTypePlugin):
 
     def config_widget(self):
         """Create a configuration widget for the plugin."""
-        from calibre_plugins.epubmgfiletype.config_ui import ConfigWidget
+        from calibre_plugins.metaguidefiletype.config_ui import ConfigWidget
 
         return ConfigWidget(self)
 
@@ -89,7 +89,7 @@ class MetaguidedEpubFileType(FileTypePlugin):
         """Save the settings from the configuration widget."""
         config_widget.save_settings()
         # Reload settings
-        from calibre_plugins.epubmgfiletype.config import prefs
+        from calibre_plugins.metaguidefiletype.config import prefs
 
         # Event settings control when the plugin runs
         self.on_postprocess = prefs["enable_on_postprocess"]

@@ -11,7 +11,7 @@ try:
 except ImportError:
     from PyQt5.Qt import QWidget, QVBoxLayout, QRadioButton, QGroupBox, QLabel
 
-from calibre_plugins.epubmginterface.config import prefs
+from calibre_plugins.metaguideinterface.config import prefs
 
 
 class ConfigWidget(QWidget):

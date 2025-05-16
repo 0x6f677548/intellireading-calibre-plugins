@@ -34,10 +34,10 @@ def get_file_paths(filename: str) -> dict:
 
 # Plugin directories
 PLUGIN_DIRS = [
-    "epubmg_filetypeplugin",
-    "epubmg_outputplugin",
-    "epubmg_interfaceplugin",
-    "kobotouch_metaguiderplugin",
+    "metaguide_filetypeplugin",
+    "metaguide_outputplugin",
+    "metaguide_interfaceplugin",
+    "metaguide_kobotouchplugin",
 ]
 
 
