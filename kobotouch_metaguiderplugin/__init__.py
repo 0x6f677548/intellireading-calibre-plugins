@@ -151,21 +151,28 @@ class KoboTouchMetaguider(KOBOTOUCH):
 
                 if file.lower().endswith(".epub"):
                     if not is_file_metaguided:
-                        # Always convert EPUBs to KEPUBs before metaguiding for optimal performance
-                        # this will avoid additional spans for each bold tag
-                        # as reported at https://go.hugobatista.com/gh/intellireading-calibre-plugins/issues/13
-                        with PersistentTemporaryFile(suffix=".kepub") as temp_file:
-                            temp_file.close()  # Close it so other processes can access it
-                            try:
-                                converted_file = self._convert_epub_to_kepub(file, temp_file.name, mi)
-                                self._log_and_show_message(f'Converted "{name}" to KEPUB...', 1000)
-                                name = name.replace(".epub", ".kepub")
-                                # Metaguide the converted file
-                                file = metaguide_file(converted_file)
-                                self._log_and_show_message(f'Successfully metaguided "{name}"', 1000)
-                            except Exception as e:
-                                common.log.error(f"Error converting {file} to kepub: {e}")
-                                raise
+                        # Only convert to kepub if enabled in preferences and not a Tolino device
+                        do_kepubify = self.get_pref('kepubify') and not self.isTolinoDevice()
+                        if do_kepubify:
+                            # Convert EPUBs to KEPUBs before metaguiding for optimal performance
+                            # this will avoid additional spans for each bold tag
+                            # as reported at https://go.hugobatista.com/gh/intellireading-calibre-plugins/issues/13
+                            with PersistentTemporaryFile(suffix=".kepub") as temp_file:
+                                temp_file.close()  # Close it so other processes can access it
+                                try:
+                                    converted_file = self._convert_epub_to_kepub(file, temp_file.name, mi)
+                                    self._log_and_show_message(f'Converted "{name}" to KEPUB...', 1000)
+                                    name = name.replace(".epub", ".kepub")
+                                    # Metaguide the converted file
+                                    file = metaguide_file(converted_file)
+                                    self._log_and_show_message(f'Successfully metaguided "{name}"', 1000)
+                                except Exception as e:
+                                    common.log.error(f"Error converting {file} to kepub: {e}")
+                                    raise
+                        else:
+                            # If kepubify is disabled or it's a Tolino device, just metaguide the epub directly
+                            file = metaguide_file(file)
+                            self._log_and_show_message(f'Successfully metaguided "{name}"', 1000)
                     else:
                         # Show warning dialog about metaguided epub performance on Kobo
                         gui.status_bar.show_message(
