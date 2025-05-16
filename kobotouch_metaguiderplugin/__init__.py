@@ -152,7 +152,7 @@ class KoboTouchMetaguider(KOBOTOUCH):
                 if file.lower().endswith(".epub"):
                     if not is_file_metaguided:
                         # Only convert to kepub if enabled in preferences and not a Tolino device
-                        do_kepubify = self.get_pref('kepubify') and not self.isTolinoDevice()
+                        do_kepubify = self.get_pref("kepubify") and not self.isTolinoDevice()
                         if do_kepubify:
                             # Convert EPUBs to KEPUBs before metaguiding for optimal performance
                             # this will avoid additional spans for each bold tag
