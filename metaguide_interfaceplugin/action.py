@@ -84,14 +84,14 @@ class InterfacePlugin(InterfaceAction):
         if config.prefs["show_kobotouch_message"]:
             common.log.info("Showing KoboTouch Metaguider availability message")
             msg = _(  # type: ignore # noqa
-                "If you use a Kobo device, you can now use the 'KoboTouch Metaguider' device driver "
+                "If you use a Kobo device, you can now use the 'Metaguide - KoboTouch Driver' plugin.\n\n"
                 "to automatically convert books to metaguided format when sending them to your device.\n\n"
                 "To use it, download it from the calibre plugin store and install it.\n\n"
                 "Click 'Yes' to show this message next time, 'No' to never show it again."
             )
             show_message = question_dialog(
                 self.gui,
-                _("KoboTouch Metaguider Available"),  # type: ignore # noqa
+                _("Metaguide - KoboTouch Driver Available"),  # type: ignore # noqa
                 msg,
                 show_copy_button=True,
                 default_yes=False,  # False makes "Don't show again" the default
