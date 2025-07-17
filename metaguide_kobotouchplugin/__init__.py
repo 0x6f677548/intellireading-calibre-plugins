@@ -27,8 +27,8 @@ def metaguide_file(filepath: str) -> str:
     return filepath
 
 
-class KoboTouchMetaguider(KOBOTOUCH):
-    name = "Metaguide - KoboTouch Driver (intellireading.com)"
+class KoboTouchMetaguideDriver(KOBOTOUCH):
+    name = "KoboTouch - Metaguide Driver (intellireading.com)"
     description = (
         "Kobo Touch driver with metaguiding support for epub and kepub files. "
         "This driver is a modified version of the KoboTouch driver from calibre, enabling "
@@ -43,7 +43,7 @@ class KoboTouchMetaguider(KOBOTOUCH):
     author = "Hugo Batista"
 
     def initialize(self) -> None:
-        common.log.debug("Initializing KoboTouchMetaguider")
+        common.log.debug(f"Initializing {self.name} plugin")
         super().initialize()
 
     def _convert_epub_to_kepub(self, input_path: str, output_path: str, metadata: Optional[Metadata] = None) -> str:
@@ -107,7 +107,7 @@ class KoboTouchMetaguider(KOBOTOUCH):
         from calibre.gui2.ui import get_gui
 
         gui = get_gui()
-        gui.status_bar.show_message(f"KoboTouchMetaguider: {message}", duration)
+        gui.status_bar.show_message(f"{self.__class__.__name__}: {message}", duration)
 
     def upload_books(
         self,
