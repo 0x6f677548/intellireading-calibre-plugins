@@ -143,7 +143,7 @@ class RegExBoldMetaguider:
         from lxml import etree
 
         parser = etree.XMLParser(resolve_entities=False)
-        doc = etree.fromstring(xhtml_document, parser=parser).getroottree()  # noqa: S320
+        doc = etree.fromstring(xhtml_document, parser=parser).getroottree()
         docinfo = doc.docinfo
         return docinfo.encoding
 
@@ -225,6 +225,8 @@ class _EpubItemFile:
     def metaguide(self, metaguider: RegExBoldMetaguider, *, remove_metaguiding: bool = False):
         if not remove_metaguiding and self.metaguided:
             _logger.warning(f"File {self.filename} already metaguided, skipping")
+        elif self.filename == "nav.xhtml":
+            _logger.debug(f"Skipping nav file {self.filename}")
         elif self.is_xhtml_document:
             _logger.debug(f"Metaguiding file {self.filename}")
             self.content = metaguider.metaguide_xhtml_document(self.content, remove_metaguiding=remove_metaguiding)
@@ -242,7 +244,7 @@ def _get_epub_item_files_from_zip(input_zip: zipfile.ZipFile) -> list:
         return _EpubItemFile(filename, input_zip.read(filename))
 
     epub_item_files = [read_compressed_file(input_zip, f.filename) for f in input_zip.infolist()]
-    _logger.debug("Read %d files from input file", len(epub_item_files))
+    _logger.debug(f"Read {len(epub_item_files)} files from input file")
     return epub_item_files
 
 
