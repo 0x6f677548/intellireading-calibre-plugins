@@ -17,6 +17,7 @@ _logger = logging.getLogger(__name__)
 _METAGUIDED_FLAG_FILENAME = "intellireading.metaguide"
 _EPUB_EXTENSIONS = [".EPUB", ".KEPUB"]
 _XHTML_EXTENSIONS = [".XHTML", ".HTML", ".HTM"]
+_TOC_FILENAMES = ["nav.xhtml", "nav.html", "toc.xhtml", "toc.html"]
 
 
 def _generate_flag_file_content() -> bytes:
@@ -217,6 +218,16 @@ class _EpubItemFile:
 
         # some epub have files with html extension but they are xml files
         self.is_xhtml_document = _extension in _XHTML_EXTENSIONS
+        
+        # check whether the file is a table of contents or navigation file
+        # by checking the filename against a list of known TOC filenames
+        # this is a heuristic and may not be 100% accurate. 
+        # Separate the directory check from the filename check
+        self.is_toc_document = False
+        if self.filename:
+            # Normalize the filename to lowercase for comparison and remove the directory part
+            filename_base = os.path.basename(self.filename.lower())
+            self.is_toc_document = filename_base in _TOC_FILENAMES
         self.metaguided = False  # flag to indicate if the file has been metaguided. Useful for multi-threading
 
     def __str__(self) -> str:
@@ -225,8 +236,8 @@ class _EpubItemFile:
     def metaguide(self, metaguider: RegExBoldMetaguider, *, remove_metaguiding: bool = False):
         if not remove_metaguiding and self.metaguided:
             _logger.warning(f"File {self.filename} already metaguided, skipping")
-        elif self.filename == "nav.xhtml":
-            _logger.debug(f"Skipping nav file {self.filename}")
+        elif self.is_toc_document:
+            _logger.debug(f"Skipping nav/toc file {self.filename}")
         elif self.is_xhtml_document:
             _logger.debug(f"Metaguiding file {self.filename}")
             self.content = metaguider.metaguide_xhtml_document(self.content, remove_metaguiding=remove_metaguiding)
