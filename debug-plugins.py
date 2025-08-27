@@ -40,7 +40,9 @@ def get_plugin_name_from_init(plugin_path: Path) -> Optional[str]:
                         and child.targets[0].id == "name"
                         and isinstance(child.value, ast.Constant)
                     ):
-                        return child.value.value
+                        # make sure the value is a string
+                        if isinstance(child.value.value, str):
+                            return child.value.value
         return None
     except Exception as e:
         print(f"Warning: Could not read plugin name from {init_path}: {e}")
