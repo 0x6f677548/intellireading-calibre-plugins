@@ -14,4 +14,3 @@ prefs = JSONConfig("plugins/metaguideinterface")
 
 # Set defaults
 prefs.defaults["default_action"] = "epub"  # can be 'epub' or 'kepub'
-prefs.defaults["show_kobotouch_message"] = True  # whether to show the KoboTouch Metaguider message

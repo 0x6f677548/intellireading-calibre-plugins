@@ -22,6 +22,23 @@ from calibre_plugins.metaguideinterface import (
 )
 
 
+# Donate message for first-time users
+MSG_WELCOME = (
+    "This plugin metaguides the selected books on your Calibre library.\n\n"
+    "Metaguiding improves focus and reading speed by highlighting "
+    "the beginning of words (sometimes called bionic reading).\n\n"
+    "If you use a Kobo device, you can now use the 'KoboTouch - Metaguide Driver' plugin "
+    "to automatically convert books to metaguided format when sending them to your device.\n\n"
+    "To use it, download it from the calibre plugin store and install it.\n\n"
+    "💙 Thank you for using IntelliReading!\n"
+    "If this plugin improves your reading experience, please consider supporting "
+    "its development with a donation. Your contribution helps maintain and improve "
+    "these tools for the reading community.\n\n"
+    "🌐 For more information: https://go.hugobatista.com/intellireading"
+)
+
+
+
 class InterfacePlugin(InterfaceAction):
     """Interface plugin for metaguiding epubs"""
 
@@ -78,27 +95,6 @@ class InterfacePlugin(InterfaceAction):
 
         # point the metaguiding logger to the common logger
         metaguiding._logger = common.log
-
-    def _show_kobotouch_message_if_enabled(self):
-        """Show a message about KoboTouch Metaguider plugin."""
-        if config.prefs["show_kobotouch_message"]:
-            common.log.info("Showing KoboTouch Metaguider availability message")
-            msg = _(  # type: ignore # noqa
-                "If you use a Kobo device, you can now use the 'Metaguide - KoboTouch Driver' plugin.\n\n"
-                "to automatically convert books to metaguided format when sending them to your device.\n\n"
-                "To use it, download it from the calibre plugin store and install it.\n\n"
-                "Click 'Yes' to show this message next time, 'No' to never show it again."
-            )
-            show_message = question_dialog(
-                self.gui,
-                _("Metaguide - KoboTouch Driver Available"),  # type: ignore # noqa
-                msg,
-                show_copy_button=True,
-                default_yes=False,  # False makes "Don't show again" the default
-                yes_text=_("Show again"),  # type: ignore # noqa
-                no_text=_("Don't show again"),  # type: ignore # noqa
-            )
-            config.prefs["show_kobotouch_message"] = show_message
 
     def _show_warning_dialog(self, remove_metaguiding: bool) -> bool:
         """Show a warning dialog to the user before proceeding with metaguiding operations.
@@ -197,8 +193,12 @@ class InterfacePlugin(InterfaceAction):
     def metaguide_selection_format(self, format_to_find: str, *, remove_metaguiding: bool = False):
         from calibre.gui2 import error_dialog
 
-        # Show KoboTouch message if enabled
-        self._show_kobotouch_message_if_enabled()
+        common.show_donate_message(
+            title = "Metaguiding interface plugin - Welcome!",
+            message = MSG_WELCOME,
+            skip_dialog_name = "metaguiding_gui_donate"
+        )
+
 
         # Show warning dialog
         if not self._show_warning_dialog(remove_metaguiding):

@@ -3,6 +3,7 @@ from typing import List, Optional, Tuple
 from calibre.ebooks.metadata.book.base import Metadata
 from calibre_plugins.metaguidekobotouch import common, metaguiding, __about_cli__
 
+
 # Constants
 MSG_ALREADY_METAGUIDED = (
     '"{name}" is already metaguided. '
@@ -12,6 +13,21 @@ MSG_ALREADY_METAGUIDED = (
     "1. Send the original non-metaguided EPUB to your Kobo\n"
     "2. Let this driver handle the metaguiding during transfer\n\n"
     "This ensures optimal performance on your device."
+)
+
+# Donate message for first-time users
+MSG_WELCOME = (
+    "This driver automatically converts your books to metaguided format when transferring "
+    "them to your Kobo device, preserving the original files in your Calibre library. "
+    "Metaguiding improves focus and reading speed by highlighting "
+    "the beginning of words (sometimes called bionic reading).\n\n"
+    "The driver will process your books seamlessly when you send them to your device. "
+    "No additional configuration is required!\n\n"
+    "💙 Thank you for using IntelliReading!\n"
+    "If this plugin improves your reading experience, please consider supporting "
+    "its development with a donation. Your contribution helps maintain and improve "
+    "these tools for the reading community.\n\n"
+    "🌐 For more information: https://go.hugobatista.com/intellireading"
 )
 
 
@@ -45,6 +61,15 @@ class KoboTouchMetaguideDriver(KOBOTOUCH):
     def initialize(self) -> None:
         common.log.debug(f"Initializing {self.name} plugin")
         super().initialize()
+
+    def post_open_callback(self):
+        common.log.info("Post open callback triggered")
+        common.show_donate_message(
+            title = "KoboTouch Metaguide Driver - Welcome!",
+            message = MSG_WELCOME,
+            skip_dialog_name = "kobo_touch_metaguide_donate"
+        )
+        super().post_open_callback()
 
     def _convert_epub_to_kepub(self, input_path: str, output_path: str, metadata: Optional[Metadata] = None) -> str:
         """
