@@ -65,9 +65,9 @@ class KoboTouchMetaguideDriver(KOBOTOUCH):
     def post_open_callback(self):
         common.log.info("Post open callback triggered")
         common.show_donate_message(
-            title = "KoboTouch Metaguide Driver - Welcome!",
-            message = MSG_WELCOME,
-            skip_dialog_name = "kobo_touch_metaguide_donate"
+            title="KoboTouch Metaguide Driver - Welcome!",
+            message=MSG_WELCOME,
+            skip_dialog_name="kobo_touch_metaguide_donate",
         )
         super().post_open_callback()
 

@@ -87,6 +87,7 @@ log = Logger()
 def open_donation_link():
     """Open the PayPal donation link in the default browser."""
     from calibre.gui2 import open_url
+
     try:
         open_url("https://go.hugobatista.com/donate-intellireading")
         log.info("Opened donation link in browser")
@@ -99,12 +100,12 @@ def show_donate_message(title, message, skip_dialog_name):
     try:
         from calibre.gui2 import question_dialog
         from calibre.gui2.ui import get_gui
-        
+
         gui = get_gui()
         # Only show GUI dialog if GUI is available
         if gui is not None:
             log.info("Showing donate message")
-            
+
             # Show question dialog with donation option
             show_donation = question_dialog(
                 gui,
@@ -112,7 +113,7 @@ def show_donate_message(title, message, skip_dialog_name):
                 message,
                 skip_dialog_name=skip_dialog_name,
                 default_yes=False,  # False makes "Maybe Later" the default
-                skip_dialog_skipped_value = False,
+                skip_dialog_skipped_value=False,
                 yes_icon=None,
                 no_icon=None,
                 yes_text="☕ Donate",

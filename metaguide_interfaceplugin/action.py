@@ -38,7 +38,6 @@ MSG_WELCOME = (
 )
 
 
-
 class InterfacePlugin(InterfaceAction):
     """Interface plugin for metaguiding epubs"""
 
@@ -194,11 +193,10 @@ class InterfacePlugin(InterfaceAction):
         from calibre.gui2 import error_dialog
 
         common.show_donate_message(
-            title = "Metaguiding interface plugin - Welcome!",
-            message = MSG_WELCOME,
-            skip_dialog_name = "metaguiding_gui_donate"
+            title="Metaguiding interface plugin - Welcome!",
+            message=MSG_WELCOME,
+            skip_dialog_name="metaguiding_gui_donate",
         )
-
 
         # Show warning dialog
         if not self._show_warning_dialog(remove_metaguiding):
