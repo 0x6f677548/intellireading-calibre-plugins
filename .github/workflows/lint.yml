@@ -53,7 +53,7 @@ jobs:
       
       - name: Lint with black
         run: |
-          black --check .
+          black --check . --line-length 120
       # ignore E501 (line too long) for now
       - name: Lint with ruff
         run: |

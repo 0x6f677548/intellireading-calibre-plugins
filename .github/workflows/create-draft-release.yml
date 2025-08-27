@@ -53,14 +53,16 @@
       - name: Checkout
         uses: actions/checkout@v4.1.0
       
-      - name: Zip epubmg_interfaceplugin Folder
+      - name: Zip plugin folders
         run: |
-          cd epubmg_interfaceplugin
-          zip -r ../epubmg_interfaceplugin.zip .
-          cd ../epubmg_filetypeplugin
-          zip -r ../epubmg_filetypeplugin.zip .
-          cd ../epubmg_outputplugin
-          zip -r ../epubmg_outputplugin.zip .
+          cd metaguide_interfaceplugin
+          zip -r ../metaguide_interfaceplugin.zip .
+          cd ../metaguide_filetypeplugin
+          zip -r ../metaguide_filetypeplugin.zip .
+          cd ../metaguide_outputplugin
+          zip -r ../metaguide_outputplugin.zip .
+          cd ../metaguide_kobotouchplugin
+          zip -r ../metaguide_kobotouchplugin.zip .
           cd ..
 
       - name: Create release branch
@@ -72,5 +74,5 @@
         env: 
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |        
-          gh release create ${{ inputs.version }} --title ${{ inputs.version }} --generate-notes --draft 'epubmg_interfaceplugin.zip' 'epubmg_filetypeplugin.zip' 'epubmg_outputplugin.zip' 
-  
+          gh release create ${{ inputs.version }} --title ${{ inputs.version }} --generate-notes --draft 'metaguide_interfaceplugin.zip' 'metaguide_filetypeplugin.zip' 'metaguide_outputplugin.zip' 'metaguide_kobotouchplugin.zip'
+

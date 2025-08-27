@@ -1,21 +1,21 @@
-![Intellireading.com](https://raw.githubusercontent.com/0x6f677548/intellireading-www/main/src/img/intellireading.png)
+![Intellireading.com](https://go.hugobatista.com/ghraw/intellireading-www/main/src/img/intellireading.png)
 # Calibre Plugins
 
-[![GitHub - Lint](https://github.com/0x6f677548/intellireading-calibre-plugins/actions/workflows/lint.yml/badge.svg)](https://github.com/0x6f677548/intellireading-calibre-plugins/actions/workflows/lint.yml)
+[![GitHub - Lint](https://go.hugobatista.com/gh/intellireading-calibre-plugins/actions/workflows/lint.yml/badge.svg)](https://go.hugobatista.com/gh/intellireading-calibre-plugins/actions/workflows/lint.yml)
 
 **Th**is **re**po **cont**ains **th**e **sou**rce **co**de **fo**r [**Intelli**reading](https://intellireading.com/) **Cali**bre **plug**ins. **The**se **plug**ins **all**ow **yo**u **t**o **gene**rate **metag**uided **vers**ions **o**f **yo**ur **eboo**ks, **b**y **implem**enting **a** **stream**lined **vers**ion **o**f **th**e [**Intelli**reading](https://intellireading.com/) **algor**ithm, **usi**ng **th**e [**Cali**bre](https://calibre-ebook.com/) **ebo**ok **mana**ger.
 
 Example of a text converted to a metaguided text:
-![Intellireading.com](https://raw.githubusercontent.com/0x6f677548/intellireading-www/main/src/img/sample.png) 
+![Intellireading.com](https://go.hugobatista.com/ghraw/intellireading-www/main/src/img/sample.png) 
 
 
 This repo is part of the [Intellireading](https://intellireading.com/) project, which aims to help people with dyslexia, ADHD, or anyone who wants to improve their reading focus and speed. 
 
-## [Other Intellireading Code Repositories](https://github.com/stars/0x6f677548/lists/intellireading)
-- [Intellireading website](https://www.github.com/0x6f677548/intellireading-www), which allows anyone to convert an Epub to the metaguided version.
-- [Backend Servers](https://www.github.com/0x6f677548/intellireading-backend), that support the Intellireading website.
-- [CLI Tool](https://www.github.com/0x6f677548/intellireading-cli). A standalone tool and library that can be used to metaguide epub files.
-- [Calibre Plugins](https://www.github.com/0x6f677548/intellireading-calibre-plugins). A set of plugins that can be used to metaguide epub files using Calibre.
+## [Other Intellireading Code Repositories](https://go.hugobatista.com/ghstars/lists/intellireading)
+- [Intellireading website](https://go.hugobatista.com/gh/intellireading-www), which allows anyone to convert an Epub to the metaguided version.
+- [API Server](https://go.hugobatista.com/gh/intellireading-api_server), that support the Intellireading website.
+- [CLI Tool](https://go.hugobatista.com/gh/intellireading-cli). A standalone tool and library that can be used to metaguide epub files.
+- [Calibre Plugins](https://go.hugobatista.com/gh/intellireading-calibre-plugins). A set of plugins that can be used to metaguide epub files using Calibre.
 
 ## What is Epub Metaguiding?
 **Metagu**iding **i**s **a** **techn**ique **th**at **ca**n **b**e **us**ed **t**o **impr**ove **yo**ur **read**ing **foc**us **an**d **spe**ed **(some**times **cal**led **Bio**nic **Readi**ng). **I**t **i**s **bas**ed **o**n **th**e **id**ea **th**at **yo**u **ca**n **us**e **a** **vis**ual **gui**de **t**o **he**lp **yo**ur **ey**es **foc**us **o**n **th**e **te**xt **yo**u **ar**e **read**ing. **I**n **th**is **cas**e, **th**e **vis**ual **gui**de **i**s **do**ne **b**y **bold**ing **a** **pa**rt **o**f **th**e **tex**t, **crea**ting **vis**ual **anch**ors **th**at **yo**ur **ey**es **ca**n **us**e **t**o **foc**us **o**n **th**e **tex**t. **Th**is **i**s **simi**lar **t**o **th**e **wa**y **a** **fin**ger **ca**n **b**e **us**ed **t**o **gui**de **yo**ur **ey**es **alo**ng **a** **li**ne **o**f **tex**t, **whi**ch **ha**s **be**en **sho**wn **t**o **impr**ove **read**ing **spe**ed **an**d **foc**us. ([**stu**dy: **"Do**es **finger-t**racking **poi**nt **t**o **chi**ld **read**ing **strate**gies"](https://ceur-ws.org/Vol-2769/paper_60.pdf))
@@ -30,11 +30,18 @@ This repo is part of the [Intellireading](https://intellireading.com/) project, 
 
 
 ## Calibre Plugins available
-**Th**e **plug**ins **ar**e **avail**able **i**n **th**e [**Cali**bre **Plu**gin **Sto**re](https://plugins.calibre-ebook.com/), **an**d **ca**n **b**e **insta**lled **fr**om **th**e **Cali**bre **inter**face. **Yo**u **ca**n **al**so **down**load **th**e **plug**ins **fr**om **th**is **rep**o, **an**d **inst**all **th**em **manua**lly. **Al**l **plug**ins **ar**e **compa**tible **wi**th **Cali**bre **6.5**.0 **an**d **abo**ve.
 
-### Epub Metaguider post processor (FileType)
-**Wor**ks **o**n **po**st **conve**rsion **an**d **po**st **impo**rt, **allo**wing **yo**u **t**o **gene**rate **metag**uided **vers**ions **o**f **yo**ur **ebo**oks **wh**en **conve**rting **t**o **ep**ub **o**r **impor**ting **ep**ub **fil**es.
-### Epub Metaguider GUI (Interface Action)
+### Basic plugins
+**The**se **plug**ins **ar**e **avail**able **i**n **th**e [**Cali**bre **Plu**gin **Sto**re](https://plugins.calibre-ebook.com/), **an**d **ca**n **b**e **insta**lled **fr**om **th**e **Cali**bre **inter**face. **Yo**u **ca**n **al**so **down**load **th**e **plug**ins **fr**om **th**is **rep**o, **an**d **inst**all **th**em **manua**lly. **Al**l **plug**ins **ar**e **compa**tible **wi**th **Cali**bre **6.5**.0 **an**d **abo**ve.
+
+#### [Epub Metaguider GUI (Interface Action)](https://www.mobileread.com/forums/showthread.php?t=358615)
 **Ad**ds **butt**ons **t**o **th**e **Cali**bre **inter**face, **allo**wing **yo**u **t**o **gene**rate **metag**uided **vers**ions **o**f **yo**ur **ebo**oks **fr**om **th**e **Ma**in **Tool**bar **o**r **th**e **Cont**ext **Men**u.
-### Epub Metaguider output format (Output Format)
+#### [KoboTouch Metaguider (Device Interface)]()
+**Exte**nds **th**e **KoboT**ouch **dri**ver, **allo**wing **yo**u **t**o **automa**tically **gene**rate **metag**uided **vers**ions **o**f **yo**ur **ebo**oks **wh**en **sen**ding **the**m **t**o **yo**ur **Ko**bo **devi**ce.
+
+### Advanced plugins 
+**Th**ese **plug**ins **ar**e **no**t **avail**able **i**n **th**e [**Cali**bre **Plu**gin **Sto**re](https://plugins.calibre-ebook.com/), **an**d **ca**n **b**e **insta**lled **fr**om **th**e **Cali**bre **inter**face **o**nly. **Down**load **the**se **plug**ins **fr**om **th**is **rep**o, **an**d **inst**all **th**em **manua**lly.
+#### [Epub Metaguider output format (Output Format)](https://www.mobileread.com/forums/showthread.php?t=358616)
 **Exte**nds **th**e **ep**ub **out**put **form**at, **allo**wing **yo**u **t**o **gene**rate **metag**uided **vers**ions **o**f **yo**ur **ebo**oks **wh**en **conve**rting **t**o **epu**b.
+#### [Epub Metaguider post processor (FileType)](https://www.mobileread.com/forums/showthread.php?t=358613)
+**Wor**ks **o**n **po**st **conve**rsion **an**d **po**st **impo**rt, **allo**wing **yo**u **t**o **gene**rate **metag**uided **vers**ions **o**f **yo**ur **ebo**oks **wh**en **conve**rting **t**o **ep**ub **o**r **impor**ting **ep**ub **fil**es.

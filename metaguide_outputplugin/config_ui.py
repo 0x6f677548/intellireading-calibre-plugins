@@ -1,7 +1,7 @@
 """Configuration for exporting epubmg files."""
 
 __license__ = "GPL v3"
-__copyright__ = "2024, 0x6f677548 (Hugo Batista)<Ox6f677548 at outlook dot com>"
+__copyright__ = "2025, Hugo Batista <intellireading at hugobatista.com>"
 __docformat__ = "markdown en"
 
 # pylint: disable=import-error
@@ -11,7 +11,7 @@ from calibre.gui2.convert.epub_output import PluginWidget as EPUBPluginWidget
 from calibre.gui2.convert.epub_output_ui import Ui_Form as EPUBUIForm
 from calibre.gui2.preferences.conversion import OutputOptions as BaseOutputOptions
 
-from calibre_plugins.epubmgoutput import common
+from calibre_plugins.metaguideoutput import common
 
 
 class PluginWidget(EPUBPluginWidget, EPUBUIForm):
@@ -61,18 +61,12 @@ class PluginWidget(EPUBPluginWidget, EPUBUIForm):
         self.opt_additional_conversion_options = QtWidgets.QLabel(
             _("Additional Conversion options") + ":"  # type: ignore # noqa
         )
-        self.gridLayout.addWidget(
-            self.opt_additional_conversion_options, _rows, 0, 1, 1
-        )
+        self.gridLayout.addWidget(self.opt_additional_conversion_options, _rows, 0, 1, 1)
 
         # epubmg_enable_metaguiding
         self.opt_epubmg_enable_metaguiding = QtWidgets.QCheckBox(Form)
-        self.opt_epubmg_enable_metaguiding.setObjectName(
-            "opt_epubmg_enable_metaguiding"
-        )
-        self.opt_epubmg_enable_metaguiding.setText(
-            _("Enable metaguiding")  # type: ignore # noqa
-        )
+        self.opt_epubmg_enable_metaguiding.setObjectName("opt_epubmg_enable_metaguiding")
+        self.opt_epubmg_enable_metaguiding.setText(_("Enable metaguiding"))  # type: ignore # noqa
         self.gridLayout.addWidget(self.opt_epubmg_enable_metaguiding, _rows, 1, 1, 1)
 
         _rows += 1
