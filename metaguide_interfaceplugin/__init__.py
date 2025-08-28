@@ -20,7 +20,7 @@ class InterfacePluginWrapper(InterfaceActionBase):
 
         return ConfigWidget(None)
 
-    name = "EPUB Metaguider - GUI (intellireading)"
+    name = "EBook Metaguider (intellireading)"
     description = (
         "Adds a button to toolbar and context menu, to convert epub and kepub files "
         "to a metaguided format, improving your focus and reading speed "

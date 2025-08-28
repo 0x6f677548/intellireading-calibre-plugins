@@ -22,7 +22,7 @@ class MetaguidedEpubOutput(EPUBOutput):
     description = (
         "Adds additional options to Epub Output conversion, enabling epub files conversion to a metaguided format, improving your focus and reading speed (sometimes called bionic reading)."
         " This plugin is for ADVANCED users only. It is not recommended for beginners. If you are new to metaguiding, please use the "
-        "'EPUB Metaguider - GUI (intellireading)' plugin instead."
+        "'EBook Metaguider (intellireading)' plugin instead."
     )
 
     supported_platforms = ["windows", "osx", "linux"]

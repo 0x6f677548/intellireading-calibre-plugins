@@ -19,6 +19,7 @@ from calibre_plugins.metaguideinterface import (
     common,
     metaguiding,
     config,
+    __about_cli__,
 )
 
 
@@ -34,14 +35,15 @@ MSG_WELCOME = (
     "If this plugin improves your reading experience, please consider supporting "
     "its development with a donation. Your contribution helps maintain and improve "
     "these tools for the reading community.\n\n"
-    "🌐 For more information: https://go.hugobatista.com/intellireading"
+    "🌐 For more information: https://go.hugobatista.com/intellireading \n\n"
+    "Lib Version: " + __about_cli__.__version__ 
 )
 
 
 class InterfacePlugin(InterfaceAction):
     """Interface plugin for metaguiding epubs"""
 
-    name = "Intellireading Interface Plugin"
+    name = "EBook Metaguider Interface Plugin (intellireading)"
 
     # Create our top-level menu/toolbar action (text, icon_path, tooltip, keyboard shortcut)
     action_spec = (
@@ -91,6 +93,13 @@ class InterfacePlugin(InterfaceAction):
         # Add remove metaguiding action to menu
         remove_metaguiding_action = self.menu.addAction(_("Remove metaguiding"))  # type: ignore # noqa
         remove_metaguiding_action.triggered.connect(self.remove_metaguiding_epub_selection)
+
+
+        # Add separator
+        self.menu.addSeparator()
+        # Add an about action to the menu
+        about_action = self.menu.addAction(_("About"))  # type: ignore # noqa
+        about_action.triggered.connect(self.show_about_dialog)
 
         # point the metaguiding logger to the common logger
         metaguiding._logger = common.log
@@ -188,14 +197,21 @@ class InterfacePlugin(InterfaceAction):
             return False
 
         return True
+    
+    def show_about_dialog(self):
+        common.show_donate_message(
+            title="EBook Metaguider (intellireading) - About",
+            message=MSG_WELCOME,
+            skip_dialog_name=None
+        )
 
     def metaguide_selection_format(self, format_to_find: str, *, remove_metaguiding: bool = False):
         from calibre.gui2 import error_dialog
 
         common.show_donate_message(
-            title="Metaguiding interface plugin - Welcome!",
+            title="EBook Metaguider (intellireading) - Welcome!",
             message=MSG_WELCOME,
-            skip_dialog_name="metaguiding_gui_donate",
+            skip_dialog_name="ebook_metaguider_donate",
         )
 
         # Show warning dialog
