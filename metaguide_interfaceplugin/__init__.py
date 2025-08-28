@@ -28,7 +28,7 @@ class InterfacePluginWrapper(InterfaceActionBase):
     )
     supported_platforms = ["windows", "osx", "linux"]
     author = "Hugo Batista"
-    version = (2, 0, 0)
+    version = (2, 0, 1)
     minimum_calibre_version = (8, 4, 0)
 
     #: This field defines the GUI plugin class that contains all the code
