@@ -56,13 +56,13 @@
       - name: Zip plugin folders
         run: |
           cd metaguide_interfaceplugin
-          zip -r ../metaguide_interfaceplugin.zip .
+          zip -r ../metaguide_interfaceplugin_${{ inputs.version }}.zip .
           cd ../metaguide_filetypeplugin
-          zip -r ../metaguide_filetypeplugin.zip .
+          zip -r ../metaguide_filetypeplugin_${{ inputs.version }}.zip .
           cd ../metaguide_outputplugin
-          zip -r ../metaguide_outputplugin.zip .
+          zip -r ../metaguide_outputplugin_${{ inputs.version }}.zip .
           cd ../metaguide_kobotouchplugin
-          zip -r ../metaguide_kobotouchplugin.zip .
+          zip -r ../metaguide_kobotouchplugin_${{ inputs.version }}.zip .
           cd ..
 
       - name: Create release branch
@@ -74,5 +74,5 @@
         env: 
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |        
-          gh release create ${{ inputs.version }} --title ${{ inputs.version }} --generate-notes --draft 'metaguide_interfaceplugin.zip' 'metaguide_filetypeplugin.zip' 'metaguide_outputplugin.zip' 'metaguide_kobotouchplugin.zip'
+          gh release create ${{ inputs.version }} --title ${{ inputs.version }} --generate-notes --draft 'metaguide_interfaceplugin_${{ inputs.version }}.zip' 'metaguide_filetypeplugin_${{ inputs.version }}.zip' 'metaguide_outputplugin_${{ inputs.version }}.zip' 'metaguide_kobotouchplugin_${{ inputs.version }}.zip'
 
