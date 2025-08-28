@@ -8,10 +8,7 @@ from typing import Tuple
 from calibre.ebooks.conversion.plugins.epub_output import EPUBOutput
 from calibre.customize.conversion import OptionRecommendation
 
-from calibre_plugins.metaguideoutput import (  # pylint: disable=import-error # type: ignore
-    common,
-    metaguiding
-)
+from calibre_plugins.metaguideoutput import common, metaguiding  # pylint: disable=import-error # type: ignore
 
 __license__ = "GPL v3"
 __copyright__ = "2025, Hugo Batista <intellireading at hugobatista.com>"

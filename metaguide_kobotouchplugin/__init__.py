@@ -1,7 +1,7 @@
 from calibre.devices.kobo.driver import KOBOTOUCH
 from typing import List, Optional, Tuple
 from calibre.ebooks.metadata.book.base import Metadata
-from calibre_plugins.metaguidekobotouch import common, metaguiding, __about_cli__
+from calibre_plugins.metaguidekobotouch import common, metaguiding
 
 
 # Constants

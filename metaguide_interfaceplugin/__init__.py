@@ -8,7 +8,6 @@ from calibre.customize import (
 )
 
 
-
 class InterfacePluginWrapper(InterfaceActionBase):
     def config_widget(self):
         """
