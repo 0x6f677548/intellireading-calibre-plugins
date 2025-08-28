@@ -36,7 +36,7 @@ MSG_WELCOME = (
     "its development with a donation. Your contribution helps maintain and improve "
     "these tools for the reading community.\n\n"
     "🌐 For more information: https://go.hugobatista.com/intellireading \n\n"
-    "Lib Version: " + __about_cli__.__version__ 
+    "Lib Version: " + __about_cli__.__version__
 )
 
 
@@ -93,7 +93,6 @@ class InterfacePlugin(InterfaceAction):
         # Add remove metaguiding action to menu
         remove_metaguiding_action = self.menu.addAction(_("Remove metaguiding"))  # type: ignore # noqa
         remove_metaguiding_action.triggered.connect(self.remove_metaguiding_epub_selection)
-
 
         # Add separator
         self.menu.addSeparator()
@@ -197,12 +196,10 @@ class InterfacePlugin(InterfaceAction):
             return False
 
         return True
-    
+
     def show_about_dialog(self):
         common.show_donate_message(
-            title="EBook Metaguider (intellireading) - About",
-            message=MSG_WELCOME,
-            skip_dialog_name=None
+            title="EBook Metaguider (intellireading) - About", message=MSG_WELCOME, skip_dialog_name=None
         )
 
     def metaguide_selection_format(self, format_to_find: str, *, remove_metaguiding: bool = False):
