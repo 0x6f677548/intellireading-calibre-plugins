@@ -10,8 +10,7 @@ from calibre.customize.conversion import OptionRecommendation
 
 from calibre_plugins.metaguideoutput import (  # pylint: disable=import-error # type: ignore
     common,
-    metaguiding,
-    __about_cli__,
+    metaguiding
 )
 
 __license__ = "GPL v3"
@@ -22,18 +21,16 @@ __docformat__ = "markdown en"
 class MetaguidedEpubOutput(EPUBOutput):
     """Allows calibre to convert any known source format to a metaguided epub file."""
 
-    name = "Metaguide - Epub Output Format (intellireading.com)"
+    name = "EPUB Metaguider - Output Format (intellireading)"
     description = (
         "Adds additional options to Epub Output conversion, enabling epub files conversion to a metaguided format, improving your focus and reading speed (sometimes called bionic reading)."
-        " This plugin is for ADVANCED users only. It is not recommended for beginners. If you are new to metaguiding, please use the '"
-        + common.GUI_PLUGIN_NAME
-        + "' plugin instead."
-        " Intellireading CLI version: " + __about_cli__.__version__ + "."
+        " This plugin is for ADVANCED users only. It is not recommended for beginners. If you are new to metaguiding, please use the "
+        "'EPUB Metaguider - GUI (intellireading)' plugin instead."
     )
 
     supported_platforms = ["windows", "osx", "linux"]
     author = "Hugo Batista"
-    version = (2, 0, 0)
+    version = (2, 0, 1)
     file_type = "epub"
     minimum_calibre_version = (8, 4, 0)
     on_postprocess = True

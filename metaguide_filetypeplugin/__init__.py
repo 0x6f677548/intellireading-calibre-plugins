@@ -2,7 +2,7 @@ import os
 
 # pylint: disable=import-error
 
-from calibre_plugins.metaguidefiletype import common, metaguiding, __about_cli__
+from calibre_plugins.metaguidefiletype import common, metaguiding
 from calibre.customize import (
     FileTypePlugin,
 )
@@ -14,17 +14,15 @@ __docformat__ = "markdown en"
 
 class MetaguidedEpubFileType(FileTypePlugin):
 
-    name = "Metaguide - Post Processor (intellireading.com)"
+    name = "EPUB Metaguider - Post Processor (intellireading)"
     description = (
         "Works on post conversion/import and converts epub/kepub files to a metaguided format, improving your focus and reading speed (sometimes called bionic reading)."
-        " This plugin is for ADVANCED users only. It is not recommended for beginners. If you are new to metaguiding, please use the '"
-        + common.GUI_PLUGIN_NAME
-        + "' plugin instead."
-        " Intellireading CLI version: " + __about_cli__.__version__ + "."
+        " This plugin is for ADVANCED users only. It is not recommended for beginners. If you are new to metaguiding, please use the "
+        "'EPUB Metaguider - GUI (intellireading)' plugin instead."
     )
     supported_platforms = ["windows", "osx", "linux"]
     author = "Hugo Batista"
-    version = (2, 0, 0)
+    version = (2, 0, 1)
     file_types = set(["epub", "kepub"])
     minimum_calibre_version = (8, 4, 0)
 
